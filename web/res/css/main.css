@@ -1,0 +1,13 @@
+@font-face {
+    font-family: cinematic-default;
+    src: url("/res/font/Coves Light.otf");
+}
+
+body {
+    font-family: cinematic-default;
+    font-size: 120%;
+}
+
+.film {
+    font-family: Calibri;
+}
