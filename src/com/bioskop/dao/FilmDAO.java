@@ -31,6 +31,7 @@ public class FilmDAO {
         while(rs.next()){
             Film film = new Film();
 
+            film.setIdFilm(rs.getInt("idFilm"));
             film.setGodina(rs.getInt("godina"));
             film.setNaziv(rs.getNString("naziv"));
             film.setOpis(rs.getNString("opis"));
@@ -38,6 +39,7 @@ public class FilmDAO {
             film.setTrajanje(rs.getTime("trajanje"));
             film.setUrlTrailer(rs.getString("urltrailer"));
             film.setZanr(rs.getNString("zanr"));
+            film.setCoverPath(rs.getString("coverpath"));
             filmList.add(film);
         }
         return filmList;
@@ -49,6 +51,7 @@ public class FilmDAO {
         rs.next();
         Film film = new Film();
 
+        film.setIdFilm(rs.getInt("idFilm"));
         film.setGodina(rs.getInt("godina"));
         film.setNaziv(rs.getNString("naziv"));
         film.setOpis(rs.getNString("opis"));
@@ -56,6 +59,7 @@ public class FilmDAO {
         film.setTrajanje(rs.getTime("trajanje"));
         film.setUrlTrailer(rs.getString("urltrailer"));
         film.setZanr(rs.getNString("zanr"));
+        film.setCoverPath(rs.getString("coverpath"));
 
         return film;
     }

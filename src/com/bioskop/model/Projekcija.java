@@ -1,9 +1,8 @@
 package com.bioskop.model;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalTime;
+import java.util.Date;
 
 public class Projekcija implements Serializable {
     public Projekcija() {
@@ -12,12 +11,16 @@ public class Projekcija implements Serializable {
     private int idProjekcija;
     private Film film;
     private Proj_Sala sala;
-    private Timestamp vremePocetka;
+    private Date vremePocetka;
     private boolean zavrseno;
     private boolean premijera;
 
     public int getIdProjekcija() {
         return idProjekcija;
+    }
+
+    public void setIdProjekcija(int idProjekcija) {
+        this.idProjekcija = idProjekcija;
     }
 
     public Film getFilm() {
@@ -36,7 +39,7 @@ public class Projekcija implements Serializable {
         this.sala = sala;
     }
 
-    public Timestamp getVremePocetka() {
+    public Date getVremePocetka() {
         return vremePocetka;
     }
 

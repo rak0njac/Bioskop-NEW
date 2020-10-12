@@ -34,6 +34,7 @@ public class MultiplexDAO {
         while(rs.next()){
             Multiplex mplex = new Multiplex();
 
+            mplex.setIdMultiplex(rs.getInt("idMultiplex"));
             mplex.setNaziv(rs.getString("naziv"));
             mplexList.add(mplex);
         }
@@ -46,6 +47,19 @@ public class MultiplexDAO {
         rs.next();
         Multiplex mplex = new Multiplex();
 
+        mplex.setIdMultiplex(rs.getInt("idMultiplex"));
+        mplex.setNaziv(rs.getString("naziv"));
+
+        return mplex;
+    }
+
+    public static Multiplex findByNaziv(String naziv) throws SQLException {
+        ps = con.prepareStatement("select * from MULTIPLEX where naziv = '" + naziv + "'");
+        rs = ps.executeQuery();
+        rs.next();
+        Multiplex mplex = new Multiplex();
+
+        mplex.setIdMultiplex(rs.getInt("idmultiplex"));
         mplex.setNaziv(rs.getString("naziv"));
 
         return mplex;

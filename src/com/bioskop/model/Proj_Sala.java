@@ -14,6 +14,10 @@ public class Proj_Sala implements Serializable {
         return idSala;
     }
 
+    public void setIdSala(int idSala) {
+        this.idSala = idSala;
+    }
+
     public int getBroj() {
         return broj;
     }

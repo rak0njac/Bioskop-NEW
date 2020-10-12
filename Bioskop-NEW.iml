@@ -20,7 +20,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.5.57" level="application_server_libraries" />
-    <orderEntry type="library" name="mssql-jdbc-8.4.1.jre8" level="project" />
-    <orderEntry type="library" name="jstl:jstl:1.2" level="project" />
+    <orderEntry type="library" exported="" name="mssql-jdbc-8.4.1.jre8" level="project" />
+    <orderEntry type="library" exported="" name="jstl:jstl:1.2" level="project" />
+    <orderEntry type="library" exported="" name="com.google.code.gson:gson:2.8.6" level="project" />
   </component>
 </module>

@@ -26,6 +26,10 @@ public class Korisnik implements Serializable {
         return ImePrezime;
     }
 
+    public void setIdKorisnik(int idKorisnik) {
+        this.idKorisnik = idKorisnik;
+    }
+
     public void setImePrezime(String imePrezime) {
         ImePrezime = imePrezime;
     }

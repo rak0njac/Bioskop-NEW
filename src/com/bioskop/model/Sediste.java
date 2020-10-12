@@ -16,6 +16,10 @@ public class Sediste implements Serializable {
         return idSediste;
     }
 
+    public void setIdSediste(int idSediste) {
+        this.idSediste = idSediste;
+    }
+
     public int getBroj() {
         return broj;
     }

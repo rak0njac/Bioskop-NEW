@@ -31,8 +31,24 @@ public class Proj_SalaDAO {
         while(rs.next()){
             Proj_Sala ps = new Proj_Sala();
 
+            ps.setIdSala(rs.getInt("idSala"));
             ps.setBroj(rs.getInt("broj"));
-            ps.setMultiplex(null);
+            ps.setMultiplex(MultiplexDAO.findById(rs.getInt("idMultiplex")));
+            psList.add(ps);
+        }
+        return psList;
+    }
+
+    public static ArrayList<Proj_Sala> findByMultiplexId(int id) throws SQLException {
+        psList.clear();
+        ps = con.prepareStatement("select * from PROJ_SALA where idMultiplex=" + id);
+        rs = ps.executeQuery();
+        while(rs.next()){
+            Proj_Sala ps = new Proj_Sala();
+
+            ps.setIdSala(rs.getInt("idSala"));
+            ps.setBroj(rs.getInt("broj"));
+            ps.setMultiplex(MultiplexDAO.findById(id));
             psList.add(ps);
         }
         return psList;
@@ -44,6 +60,7 @@ public class Proj_SalaDAO {
         rs.next();
         Proj_Sala ps = new Proj_Sala();
 
+        ps.setIdSala(rs.getInt("idSala"));
         ps.setBroj(rs.getInt("broj"));
         ps.setMultiplex(MultiplexDAO.findById(rs.getInt("idMultiplex")));
 

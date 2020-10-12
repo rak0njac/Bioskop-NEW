@@ -14,6 +14,10 @@ public class Multiplex implements Serializable {
         return idMultiplex;
     }
 
+    public void setIdMultiplex(int idMultiplex) {
+        this.idMultiplex = idMultiplex;
+    }
+
     public String getNaziv() {
         return naziv;
     }

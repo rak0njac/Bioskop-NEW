@@ -18,6 +18,10 @@ public class Karta implements Serializable {
         return idKarta;
     }
 
+    public void setIdKarta(int idKarta) {
+        this.idKarta = idKarta;
+    }
+
     public Projekcija getProjekcija() {
         return projekcija;
     }

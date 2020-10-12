@@ -12,49 +12,41 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 @WebServlet("/index.html")
-public class homepage extends HttpServlet {
+public class homePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ArrayList<Projekcija> projekcije;
+
         ArrayList<Multiplex> multiplexi;
         ArrayList<String> datumi;
 
         try {
-            projekcije = ProjekcijaDAO.findAll();
             multiplexi = MultiplexDAO.findAll();
-            datumi = ProjekcijaDAO.getDateList(projekcije);
-
-
-            if(req.getAttribute("atr") == null)
-                req.setAttribute("atr", projekcije);
-            else
-                System.out.println("called * 2");
+            datumi = ProjekcijaDAO.getDateList(ProjekcijaDAO.findAll());
 
             req.setAttribute("dat", datumi);
             req.setAttribute("mul", multiplexi);
+
             req.getRequestDispatcher("index.jsp").forward(req, resp);
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
+
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //if(req.getAttribute("atr") == null)
-        //    req.setAttribute("atr", projekcije);
-        //else
-            System.out.println("called * 2");
-
-        //req.setAttribute("dat", datumi);
-        //req.setAttribute("mul", multiplexi);
-        req.getRequestDispatcher("index.jsp").forward(req, resp);
-    }
+//    @Override
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        //if(req.getAttribute("atr") == null)
+//        //    req.setAttribute("atr", projekcije);
+//        //else
+//            System.out.println("called * 2");
+//
+//        //req.setAttribute("dat", datumi);
+//        //req.setAttribute("mul", multiplexi);
+//        req.getRequestDispatcher("index.jsp").forward(req, resp);
+//    }
 }
