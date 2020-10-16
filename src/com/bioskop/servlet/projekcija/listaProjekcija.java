@@ -1,4 +1,4 @@
-package com.bioskop.servlet;
+package com.bioskop.servlet.projekcija;
 
 import com.bioskop.dao.MultiplexDAO;
 import com.bioskop.dao.ProjekcijaDAO;
@@ -19,8 +19,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-@WebServlet("/movieList")
-public class movieList extends HttpServlet {
+@WebServlet("/listaProjekcija")
+public class listaProjekcija extends HttpServlet {
     ArrayList<Projekcija> projekcije;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,7 +32,7 @@ public class movieList extends HttpServlet {
 
                 req.setAttribute("atr", projekcije);
 
-            req.getRequestDispatcher("movieList.jsp").forward(req, resp);
+            req.getRequestDispatcher("listaProjekcija.jsp").forward(req, resp);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -44,7 +44,7 @@ public class movieList extends HttpServlet {
         String datum = req.getParameter("datum");
         String mplex = req.getParameter("mplex");
 
-        System.out.println(mplex + "servlet");
+        //System.out.println(mplex + "servlet");
 
         try {
             projekcije = ProjekcijaDAO.findByDateAndMultiplex(datum, mplex);
@@ -56,6 +56,6 @@ public class movieList extends HttpServlet {
 
         req.setAttribute("atr", projekcije);
 
-        req.getRequestDispatcher("movieList.jsp").forward(req, resp);
+        req.getRequestDispatcher("listaProjekcija.jsp").forward(req, resp);
     }
 }

@@ -1,0 +1,25 @@
+HOMEPAGE algoritam:
+
+-homepage servlet ucitava listu multiplexa
+-homepage servlet ucitava listu svih datuma:
+*DAO ucitava timestamp-ove iz baze
+*pretvara ih u java.util.Date
+*ostavlja samo unique values, sortira i ubacuje u string arraylist preko formatera
+*vraca string arraylist
+
+LISTAPROJEKCIJA algoritam:
+
+-ucitava listu projekcija na osnovu izabranog multiplexa i datuma
+-ucitava karte za svaku projekciju, sortira, i ostavlja samo najjeftiniju
+
+FILM algoritam:
+
+-klikom na projekciju, poziva se doGet() iz FILM servleta sa parametrom idProjekcija
+-servlet vraca FILM na osnovu idProjekcija za JSP, takodje array list svih datuma kada se taj film prikazuje, kao i listu samih projekcija za sve datume (projekcijom se misli na vreme pocetka i broj sale)
+-vraca se json:
+*projekcija[datum][vreme-sala][cena]
+-vraca se datum iz parametra idProjekcija
+-JSP popunjava stranicu na osnovu podataka iz vracenog FILMA
+-javascript odredjuje dostupne projekcije na osnovu izabranog datuma i matrice
+-javascript menja cenu na osnovu izabranih option-a
+-klikom na dugme rezervisi, proverava se postoji li aktivan httpsession. ako postoji, potvrdna poruka o rezervaciji. ako ne postoji, redirect na login/register.

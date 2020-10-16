@@ -11,34 +11,12 @@
 </head>
 <body class="bg-dark">
 
-<form action="projekcija" id="frmProj" method="post">
+<form action="film" id="frmProj" method="get">
   <input type="hidden" name="frmDatum"/>
   <input type="hidden" name="frmId"/>
 </form>
 
-<nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light mb-5">
-  <a class="navbar-brand" href="#">
-    <img src="/res/img/connect-c-logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-    <b>Cinematic</b>
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse ml-5" id="navbarText">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="#"><b>REPERTOAR</b></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">O NAMA</a>
-      </li>
-    </ul>
-    <span class="nav-item">
-              <button type="button" class="btn btn-dark">PRIJAVA</button>
-        </span>
-  </div>
-</nav>
-
+<jsp:include page="navbar.jsp"/>
 <div class="container">
   <div class="row  bg-light p-3">
     <div class="col">
@@ -90,7 +68,7 @@
       var datum = $("#inputDatum").val()
       $('input[name ="frmDatum"]').val(datum)
       var mplex = $("#inputMultiplex").val()
-      $.post( "/movieList", { datum: datum, mplex: mplex }, function( data ) {
+      $.get( "/listaProjekcija", { datum: datum, mplex: mplex }, function( data ) {
           $("#movieList").hide()
           $( "#movieList" ).html( data )
           $("#movieList").fadeIn("250")
@@ -102,5 +80,8 @@
     $("#frmProj").submit();
   })
 </script>
+
+<script src="js/login.js"></script>
+
 </body>
 </html>

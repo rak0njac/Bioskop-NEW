@@ -3,6 +3,7 @@ package com.bioskop.dao;
 import com.bioskop.dbconfig;
 import com.bioskop.model.Film;
 import com.bioskop.model.Karta;
+import com.bioskop.model.Projekcija;
 import com.bioskop.model.Sediste;
 
 import java.sql.Connection;
@@ -29,19 +30,38 @@ public class KartaDAO {
         return null;
     }
 
-    public static ArrayList<String> getFreeSeatsByProjId(int id) throws SQLException {
+    public static ArrayList<Sediste> getFreeSeatsByProjId(int id) throws SQLException {
         ps = con.prepareStatement("select idsediste from karta where idprojekcija=" + id);
         rs = ps.executeQuery();
-        ArrayList<String> sedista = new ArrayList<>();
+        ArrayList<Sediste> sedista = new ArrayList<>();
 
         while(rs.next()){
             Sediste sediste = SedisteDAO.findById(rs.getInt("idsediste"));
-            String tip = sediste.getTip();
-            if(!sedista.contains(tip)){
-                sedista.add(tip);
-            }
+            sedista.add(sediste);
         }
         return sedista;
+    }
+
+    public static ArrayList<Karta> findByProjList(ArrayList<Projekcija> list) throws SQLException {
+                kartaList.clear();
+                for(Projekcija p : list){
+                    ps = con.prepareStatement("select * from KARTA where idprojekcija = "+p.getIdProjekcija());
+                    rs = ps.executeQuery();
+                    Projekcija projekcija = ProjekcijaDAO.findById(p.getIdProjekcija());
+                    while(rs.next()){
+                        Karta karta = new Karta();
+
+                        karta.setIdKarta(rs.getInt("IdKarta"));
+                        karta.setCena(rs.getDouble("cena"));
+                        karta.setProjekcija(projekcija);
+                        karta.setSediste(SedisteDAO.findById(rs.getInt("idSediste")));
+                        karta.setStatus(rs.getNString("status"));
+                        kartaList.add(karta);
+                    }
+
+                }
+        return kartaList;
+
     }
 
 //    public static ArrayList<Film> findAll() throws SQLException {

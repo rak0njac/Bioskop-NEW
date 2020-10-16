@@ -1,10 +1,9 @@
 package com.bioskop.servlet;
 
-import com.bioskop.dao.FilmDAO;
 import com.bioskop.dao.KartaDAO;
 import com.bioskop.dao.ProjekcijaDAO;
-import com.bioskop.model.Karta;
 import com.bioskop.model.Projekcija;
+import com.bioskop.model.Sediste;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -17,24 +16,22 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-@WebServlet("/projekcija/getKartaInfo")
-public class projekcijaKarta extends HttpServlet {
+@WebServlet("/projekcija/getSedista")
+public class getSedista extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         int id = Integer.parseInt(req.getParameter("frmId"));
-        String datum = req.getParameter("frmDatum");
 
         try {
             Projekcija projekcija = ProjekcijaDAO.findById(id);
-            ArrayList<String> vremenaAndSale = ProjekcijaDAO.getTimeAndPSListByDateAndFilm(datum, projekcija.getFilm());
-            ArrayList<String> sedista = KartaDAO.getFreeSeatsByProjId(id);
+            ArrayList<Sediste> sedista = KartaDAO.getFreeSeatsByProjId(id);
 
             resp.setContentType("application/json");
-            new Gson().toJson(vremenaAndSale, resp.getWriter());
+            new Gson().toJson(sedista, resp.getWriter());
 
-        } catch (SQLException | ParseException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 

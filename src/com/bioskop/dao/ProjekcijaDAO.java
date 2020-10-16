@@ -88,6 +88,25 @@ public class ProjekcijaDAO {
         return datumi;
     }
 
+    public static ArrayList<Projekcija> findByFilmId(int id) throws SQLException {
+        projList.clear();
+        ps = con.prepareStatement("select * from Projekcija where idFilm=" + id);
+        rs = ps.executeQuery();
+
+        while(rs.next()){
+            Projekcija proj = new Projekcija();
+
+            proj.setIdProjekcija(rs.getInt("idProjekcija"));
+            proj.setFilm(FilmDAO.findById(rs.getInt("idFilm")));
+            proj.setPremijera(rs.getBoolean("premijera"));
+            proj.setVremePocetka(rs.getTimestamp("vremepocetka"));
+            proj.setZavrseno(rs.getBoolean("zavrseno"));
+            proj.setSala(Proj_SalaDAO.findById(rs.getInt("idSala")));
+            projList.add(proj);
+        }
+        return projList;
+    }
+
     public static ArrayList<String> getDateList(Film film) throws SQLException, ParseException {
         ps = con.prepareStatement("select VremePocetka from Projekcija where idFilm=" + film.getIdFilm());
         rs = ps.executeQuery();
@@ -106,6 +125,7 @@ public class ProjekcijaDAO {
     public static ArrayList<String> getTimeAndPSListByDateAndFilm(String date, Film film) throws SQLException, ParseException {
         java.util.Date d = new SimpleDateFormat("dd.MM.yyyy.").parse(date);
         date = new SimpleDateFormat("MM/dd/yyyy").format(d);
+
 
         ps = con.prepareStatement("select idsala, vremepocetka from PROJEKCIJA where datediff(day, VremePocetka, '" + date + "') = 0 and idFilm =" + film.getIdFilm());
         rs = ps.executeQuery();
