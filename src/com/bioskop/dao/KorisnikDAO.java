@@ -26,13 +26,17 @@ public class KorisnikDAO {
     }
 
 
-    public static Boolean findByUserAndPass(String user, String pass) throws SQLException {
-        ps = con.prepareStatement("select count(*) from korisnik where username = '" + user + "' and password = '" + pass + "'");
+    public static String findByUserAndPass(String user, String pass) throws SQLException {
+        ps = con.prepareStatement("select tip from korisnik where username = ? and password = ?");
+        ps.setString(1,user);
+        ps.setString(2,pass);
         rs = ps.executeQuery();
         rs.next();
-        if(rs.getInt(1) == 1)
-            return true;
-        else return false;
+        if(rs.getString(1).equals("Admin"))
+            return "admin";
+        else if(rs.getString(1).equals("User"))
+            return "user";
+        else return null;
     }
 
     public static int insert(String ImePrezime, Timestamp DatRodj, String Username, String Password, String Email, String BrTel, String Tip) throws SQLException {

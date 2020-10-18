@@ -31,18 +31,20 @@ public class filmInfo extends HttpServlet {
         try {
             Projekcija projekcija = ProjekcijaDAO.findById(id);
             Film film = projekcija.getFilm();
-            ArrayList<Projekcija> projekcije = ProjekcijaDAO.findByFilmId(film.getIdFilm());
-            ArrayList<Sediste> sedista = KartaDAO.getFreeSeatsByProjId(id);
-            ArrayList<Karta> karte = KartaDAO.findByProjList(projekcije);
+            //ArrayList<Projekcija> projekcije = ProjekcijaDAO.findByFilmId(film.getIdFilm());
+            //ArrayList<Sediste> sedista = KartaDAO.getFreeSeatsByProjId(id);
+            ArrayList<Karta> karte = KartaDAO.findByIdFilm(film.getIdFilm());
             Gson gson = new Gson();
 
 
             req.setAttribute("film", film);
-            req.setAttribute("projekcije", projekcije);
-            req.setAttribute("sed", sedista);
-            req.setAttribute("karte", gson.toJson(karte));
+            //req.setAttribute("projekcije", projekcije);
+            //req.setAttribute("sed", sedista);
+            req.setAttribute("karteJSON", gson.toJson(karte));
+            req.setAttribute("karte", karte);
 
-            req.getRequestDispatcher("film.jsp").forward(req, resp);
+
+            req.getRequestDispatcher("WEB-INF/jsp/film.jsp").forward(req, resp);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

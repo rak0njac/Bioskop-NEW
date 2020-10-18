@@ -41,31 +41,34 @@
         <b>Sinopsis: </b>${film.opis}
       </div>
       <div class="row">
+        <form action="/rezervacija" method="post">
         <div class="col">
           <label for="inputDatum">Datum</label>
           <select class="form-control mr-2 mb-3" id="inputDatum">
-            <c:forEach items="${requestScope.projekcije}" var="p">
-              <option value="${p.vremePocetka.getTime()}"><fmt:formatDate value="${p.vremePocetka}" pattern="dd.MM.yyyy." /></option>
+            <c:forEach items="${requestScope.karte}" var="k">
+              <option value="${k.projekcija.vremePocetka.getTime()}"><fmt:formatDate value="${k.projekcija.vremePocetka}" pattern="dd.MM.yyyy." /></option>
             </c:forEach>
           </select>
-          <h1>Cena: <span id="cena">400</span> din. </h1>
+          <h1 id="cena"></h1>
         </div>
         <div class="col">
           <label for="inputProj">Projekcija</label>
-          <select class="form-control mr-2" id="inputProj">
-            <c:forEach items="${requestScope.projekcije}" var="p">
-              <option data-id="${p.idProjekcija}" value="${p.vremePocetka.getTime()}"><fmt:formatDate value="${p.vremePocetka}" pattern="HH:mm" /> - Sala ${p.sala.broj}</option>
-            </c:forEach>          </select>
+          <select name="projekcija" class="form-control mr-2" id="inputProj">
+            <c:forEach items="${requestScope.karte}" var="k">
+              <option data-timestamp="${k.projekcija.vremePocetka.getTime()}" value="${k.projekcija.idProjekcija}"><fmt:formatDate value="${k.projekcija.vremePocetka}" pattern="HH:mm" /> - Sala ${k.projekcija.sala.broj}</option>
+            </c:forEach>
+          </select>
         </div>
         <div class="col">
           <label for="inputSediste">Sediste</label>
-          <select class="form-control mr-2 mb-3" id="inputSediste">
-            <c:forEach items="${requestScope.sed}" var="sed">
-              <option value="${sed.idSediste}">${sed.tip}</option>
+          <select name="sediste" class="form-control mr-2 mb-3" id="inputSediste">
+            <c:forEach items="${requestScope.karte}" var="k">
+              <option data-id="${k.projekcija.idProjekcija}" data-cena="${k.cena}" value="${k.sediste.tip}">${k.sediste.tip}</option>
             </c:forEach>
           </select>
-          <button class="btn btn-danger" style="width: 100%">REZERVISI</button>
+          <input type="submit" class="btn btn-danger" style="width: 100%">REZERVISI</input>
         </div>
+        </form>
       </div>
     </div>
   </div>
@@ -77,60 +80,96 @@
 
 <script>
 
-  var options = []
-  var karte = ${requestScope.karte}
+  var options = {}
+  var opt = []
+  //var karte = ${requestScope.karte}
 
   $(document).ready(function () {
-    $("#inputProj > option").each(function(){
-      options.push($(this))
-    })
-    console.log(karte)
+   $("#inputProj > option").each(function(){
+     if(options[$(this).attr("data-timestamp")]) {
+       $(this).remove();
+     } else {
+       options[$(this).attr("data-timestamp")] = this.value;
+       //opt.push($(this))
+     }
+   })
   })
 
 $("#inputDatum").change(function(){
-  var date2
   var date1 = new Date(parseInt($(this).val()))
-  date1.setHours(0,0,0,0)
+  var date2
   var results = []
-  $(options).each(function () {
-    date2 = new Date(parseInt($(this).val()))
-    date2.setHours(0,0,0,0)
-    console.log("prvi: " + date1.getTime() + " drugi: " + date2.getTime())
 
-    if(date1.getTime() == date2.getTime())
+  $("#inputProj").find("option").show()
+
+  date1.setHours(0,0,0,0)
+  $("#inputProj > option").each(function () {
+    date2 = new Date(parseInt($(this).attr("data-timestamp")))
+    date2.setHours(0,0,0,0)
+
+    if(date1.getTime() != date2.getTime())
     {
-      results.push($(this))
-      console.log("rezultati: " + results)
+      $(this).hide();
     }
   })
-  $("#inputProj").find("option").remove()
-  $(results).each(function(){
-    $(inputProj).append($(this))
-  })
-  $('#inputProj').val($('#inputProj > option:first').val())
+
+  selectFirst($("#inputProj"))
+  getSediste()
   getCena()
 })
 
+  function selectFirst(element){
+    var opts = $(element).find("option")
+
+    $(opts).each(function () {
+      if($(this).css('display') == 'none')            // NE DIRAJ - Chrome ne prepoznaje sakrivene optione standardnim selektorima (:hidden itd)
+      {
+        console.log("hidden!")
+      }
+      else{
+        console.log("visible!")
+        $(element).val($(this).val())
+        return false
+      }
+    })
+  }
+
   $("#inputProj").change(function () {
+    getSediste()
     getCena()
   })
+
   $("#inputSediste").change(function () {
     getCena()
   })
 
+  function getSediste(){
+    var projekcija = ($("#inputProj option:selected" ).val())
+    $("#inputSediste").find("option").show()
+    $("#inputSediste").find("option[data-id!=" + projekcija + "]").hide()
+
+    selectFirst($("#inputSediste"))
+  }
+
   function getCena(){
-    var projekcija = ($("#inputProj option:selected" ).attr("data-id"))
-    console.log("Projekcija: " + projekcija)
-    var sediste = $("#inputSediste option:selected" ).val()
-    console.log("Sediste: " + sediste)
-    $.each(karte, function (i, val) {
-      console.log("Projekcija-Karta: " + karte[i].projekcija.idProjekcija)
-      if(karte[i].projekcija.idProjekcija == projekcija && karte[i].sediste.idSediste == sediste){
-        console.log("true")
-        $("#cena").text(karte[i].cena)
-        return
-      }
-    })
+
+
+    //var projekcija = ($("#inputProj option:selected" ).attr("data-id"))
+    //console.log("Projekcija: " + projekcija)
+    //var sediste = $("#inputSediste option:selected" ).val()
+    //console.log("Sediste: " + sediste)
+    //$.each(karte, function (i, val) {
+    //  console.log("Projekcija-Karta: " + karte[i].projekcija.idProjekcija)
+    //  if(karte[i].projekcija.idProjekcija == projekcija && karte[i].sediste.idSediste == sediste){
+    //    console.log("true")
+    var cena = $("#inputSediste option:selected").attr("data-cena")
+        $("#cena").text("Cena: " + cena + " din.")
+    //    return
+    //  }
+    //})
   }
 </script>
+
+<script src="../../js/login.js"></script>
+
 </body></html>

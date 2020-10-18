@@ -29,7 +29,7 @@ public class homePage extends HttpServlet {
             req.setAttribute("dat", datumi);
             req.setAttribute("mul", multiplexi);
 
-            req.getRequestDispatcher("index.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(req, resp);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();

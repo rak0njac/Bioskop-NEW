@@ -22,7 +22,8 @@ public class registracija extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        resp.sendRedirect("/registracija.jsp");
+
+        req.getRequestDispatcher("WEB-INF/jsp/registracija.jsp").forward(req,resp);
     }
 
     @Override

@@ -19,10 +19,20 @@ public class login extends HttpServlet
         String pass = req.getParameter("pass");
 
         try {
-            if(KorisnikDAO.findByUserAndPass(user, pass))
+            if(KorisnikDAO.findByUserAndPass(user, pass) == "user")
             {
                 req.getSession().setAttribute("user", user);
                 resp.sendRedirect("/index.html");
+            }
+            else if(KorisnikDAO.findByUserAndPass(user, pass) == "admin")
+            {
+                req.getSession().setAttribute("admin", user);
+                resp.sendRedirect("/admin");
+            }
+            else
+            {
+                req.setAttribute("state", "NETACNI PODACI");
+                req.getRequestDispatcher("WEB-INF/jsp/rezervacija.jsp").forward(req,resp);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

@@ -22,24 +22,24 @@ import java.util.ArrayList;
 @WebServlet("/listaProjekcija")
 public class listaProjekcija extends HttpServlet {
     ArrayList<Projekcija> projekcije;
+    //@Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//
+//
+//        try {
+//            projekcije = ProjekcijaDAO.findAll();
+//
+//
+//                req.setAttribute("atr", projekcije);
+//
+//            req.getRequestDispatcher("listaProjekcija.jsp").forward(req, resp);
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
+//    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
-        try {
-            projekcije = ProjekcijaDAO.findAll();
-
-
-                req.setAttribute("atr", projekcije);
-
-            req.getRequestDispatcher("listaProjekcija.jsp").forward(req, resp);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String datum = req.getParameter("datum");
         String mplex = req.getParameter("mplex");
@@ -56,6 +56,6 @@ public class listaProjekcija extends HttpServlet {
 
         req.setAttribute("atr", projekcije);
 
-        req.getRequestDispatcher("listaProjekcija.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/jsp/listaProjekcija.jsp").forward(req, resp);
     }
 }

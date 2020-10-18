@@ -31,7 +31,7 @@ public class KartaDAO {
     }
 
     public static ArrayList<Sediste> getFreeSeatsByProjId(int id) throws SQLException {
-        ps = con.prepareStatement("select idsediste from karta where idprojekcija=" + id);
+        ps = con.prepareStatement("select idsediste from karta where idprojekcija=" + id + " and status = 'Raspolozivo'");
         rs = ps.executeQuery();
         ArrayList<Sediste> sedista = new ArrayList<>();
 
@@ -42,26 +42,51 @@ public class KartaDAO {
         return sedista;
     }
 
-    public static ArrayList<Karta> findByProjList(ArrayList<Projekcija> list) throws SQLException {
+    public static ArrayList<Karta> findByIdFilm(int id) throws SQLException {
                 kartaList.clear();
-                for(Projekcija p : list){
-                    ps = con.prepareStatement("select * from KARTA where idprojekcija = "+p.getIdProjekcija());
+                    ps = con.prepareStatement("select * from karta where idprojekcija in (select idprojekcija from projekcija where idfilm = ?) and status = 'Raspolozivo'");
+                    ps.setInt(1, id);
                     rs = ps.executeQuery();
-                    Projekcija projekcija = ProjekcijaDAO.findById(p.getIdProjekcija());
                     while(rs.next()){
                         Karta karta = new Karta();
+                        //Projekcija projekcija = new Projekcija();
+                        //Sediste sediste = new Sediste();
+//
+                        //projekcija.setIdProjekcija(p.getIdProjekcija());
+                        //sediste.setTip();
 
-                        karta.setIdKarta(rs.getInt("IdKarta"));
                         karta.setCena(rs.getDouble("cena"));
-                        karta.setProjekcija(projekcija);
+                        karta.setProjekcija(ProjekcijaDAO.findById(rs.getInt("idprojekcija")));
                         karta.setSediste(SedisteDAO.findById(rs.getInt("idSediste")));
                         karta.setStatus(rs.getNString("status"));
                         kartaList.add(karta);
                     }
 
-                }
         return kartaList;
 
+    }
+
+    public static String reserveTicket(int idProjekcija, String tipSedista, String username) throws SQLException {
+
+        ps = con.prepareStatement("select top 1 idkarta from karta where IdProjekcija = ? " +
+                "and IdSediste in (select idsediste from SEDISTE where Tip = ?) " +
+                "and status = 'Raspolozivo'");
+        ps.setInt(1, idProjekcija);
+        ps.setString(2, tipSedista);
+        rs = ps.executeQuery();
+
+        if(rs.next())
+        {
+            int idKarta = rs.getInt("idkarta");
+
+            ps = con.prepareStatement("update karta set status = 'Rezervisano', idkorisnik = (select idkorisnik from korisnik where username=?) where idkarta = ?");
+            ps.setString(1, username);
+            ps.setInt(2, idKarta);
+            ps.executeUpdate();
+
+            return "USPESNO";
+        }
+        else return "NEMA KARATA";
     }
 
 //    public static ArrayList<Film> findAll() throws SQLException {
