@@ -1,6 +1,5 @@
 package com.bioskop.dao;
 
-import com.bioskop.dbconfig;
 import com.bioskop.model.Film;
 
 import java.sql.*;
@@ -36,7 +35,7 @@ public class FilmDAO {
             film.setNaziv(rs.getNString("naziv"));
             film.setOpis(rs.getNString("opis"));
             film.setReziser(rs.getNString("reziser"));
-            film.setTrajanje(rs.getTime("trajanje"));
+            film.setTrajanje(rs.getTime("trajanje").toLocalTime());
             film.setUrlTrailer(rs.getString("urltrailer"));
             film.setZanr(rs.getNString("zanr"));
             film.setCoverPath(rs.getString("coverpath"));
@@ -56,11 +55,40 @@ public class FilmDAO {
         film.setNaziv(rs.getNString("naziv"));
         film.setOpis(rs.getNString("opis"));
         film.setReziser(rs.getNString("reziser"));
-        film.setTrajanje(rs.getTime("trajanje"));
+        film.setTrajanje(rs.getTime("trajanje").toLocalTime());
         film.setUrlTrailer(rs.getString("urltrailer"));
         film.setZanr(rs.getNString("zanr"));
         film.setCoverPath(rs.getString("coverpath"));
 
         return film;
+    }
+
+    public static int insert(Film film) throws SQLException {
+        ps = con.prepareStatement("insert into film(naziv, zanr, reziser, godina, trajanje, opis, urltrailer, coverpath) values (?,?,?,?,?,?,?,?)");
+        ps.setString(1, film.getNaziv());
+        ps.setString(2, film.getZanr());
+        ps.setString(3, film.getReziser());
+        ps.setInt(4, film.getGodina());
+        ps.setTime(5, Time.valueOf(film.getTrajanje()));
+        ps.setString(6, film.getOpis());
+        ps.setString(7, film.getUrlTrailer());
+        ps.setString(8, film.getCoverPath());
+
+        return ps.executeUpdate();
+    }
+
+    public static int update(Film film) throws SQLException {
+        ps = con.prepareStatement("update film set naziv=?, zanr=?, reziser=?, godina=?, trajanje=?, opis=?, urltrailer=?, coverpath=? where idfilm = ?");
+        ps.setString(1, film.getNaziv());
+        ps.setString(2, film.getZanr());
+        ps.setString(3, film.getReziser());
+        ps.setInt(4, film.getGodina());
+        ps.setTime(5, Time.valueOf(film.getTrajanje()));
+        ps.setString(6, film.getOpis());
+        ps.setString(7, film.getUrlTrailer());
+        ps.setString(8, film.getCoverPath());
+        ps.setInt(9, film.getIdFilm());
+
+        return ps.executeUpdate();
     }
 }

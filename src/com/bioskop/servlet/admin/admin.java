@@ -14,10 +14,10 @@ public class admin extends HttpServlet {
         if(req.getSession().getAttribute("admin") == null)
         {
             req.setAttribute("state", "NEMAS PRISTUP");
-            req.getRequestDispatcher("WEB-INF/jsp/rezervacija.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
-            req.getRequestDispatcher("WEB-INF/jsp/admin.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/admin/admin.jsp").forward(req, resp);
         }
     }
 }

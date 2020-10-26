@@ -11,11 +11,24 @@
 <body class="bg-dark">
 
 
-<jsp:include page="navbar.jsp"/>
+<jsp:include page="../navbar.jsp"/>
 <div class="container">
   <div class="row  bg-light p-3">
     <div class="col">
-        <h1>${requestScope.state}</h1>
+        <h1>Admin panel</h1>
+      <div class="alert alert-danger" role="alert">
+        Mole se administratori da budu izuzetno pazljivi prilikom koriscenja administratorskih opcija. Pre izvrsavanja bilo koje radnje, dvaput proverite da li ste sigurni da istu uopste zelite da izvrsite, kao i da li su svi uneti podaci tacni. Svaka zloupotreba podleze krivicnoj odgovornosti.
+      </div>
+        <h2>Korisnici</h2>
+      <a href="/admin/users/ban" class="btn btn-primary">Zabrani pristup korisniku</a>
+      <a href="/admin/users/regadmin" class="btn btn-primary">Registruj novog admina</a>
+      <h2>Filmovi</h2>
+      <a href="/admin/movies/addmovie" class="btn btn-primary">Dodaj novi film</a>
+      <a href="/admin/movies/editmovie" class="btn btn-primary">Izmeni film</a>
+      <h2>Projekcije</h2>
+      <a href="/admin/projections/addprojection" class="btn btn-primary">Dodaj novu projekciju</a>
+      <h2>Multiplexi</h2>
+      <a href="/admin/mplex/managemplex" class="btn btn-primary">Upravljanje multiplexima</a>
     </div>
   </div>
 </div>

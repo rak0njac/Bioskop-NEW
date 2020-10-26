@@ -1,7 +1,7 @@
 package com.bioskop.model;
 
 import java.io.Serializable;
-import java.sql.Time;
+import java.time.LocalTime;
 
 public class Film implements Serializable {
     public Film(){}
@@ -13,7 +13,7 @@ public class Film implements Serializable {
     private String zanr;
     private String reziser;
     private int godina;
-    private Time trajanje;
+    private LocalTime trajanje;
     private String opis;
     private String urlTrailer;
     private String coverPath;
@@ -58,11 +58,11 @@ public class Film implements Serializable {
         this.godina = godina;
     }
 
-    public Time getTrajanje() {
+    public LocalTime getTrajanje() {
         return trajanje;
     }
 
-    public void setTrajanje(Time trajanje) {
+    public void setTrajanje(LocalTime trajanje) {
         this.trajanje = trajanje;
     }
 

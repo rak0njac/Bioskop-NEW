@@ -1,6 +1,5 @@
 package com.bioskop.dao;
 
-import com.bioskop.dbconfig;
 import com.bioskop.model.Multiplex;
 
 import java.sql.Connection;
@@ -63,5 +62,18 @@ public class MultiplexDAO {
         mplex.setNaziv(rs.getString("naziv"));
 
         return mplex;
+    }
+
+    public static int delete(Multiplex mplex) throws SQLException {
+        ps = con.prepareStatement("delete from multiplex where multiplexid = ?");
+        ps.setInt(1, mplex.getIdMultiplex());
+        return ps.executeUpdate();
+    }
+
+    public static int insert(Multiplex multiplex) throws SQLException {
+        ps = con.prepareStatement("insert into multiplex(naziv) values (?)");
+        ps.setString(1, multiplex.getNaziv());
+        return ps.executeUpdate();
+
     }
 }

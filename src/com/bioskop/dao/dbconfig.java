@@ -1,4 +1,4 @@
-package com.bioskop;
+package com.bioskop.dao;
 
 import java.sql.*;
 import java.util.Map;

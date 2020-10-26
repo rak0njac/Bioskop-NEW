@@ -1,5 +1,3 @@
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="com.bioskop.model.Projekcija" %><%-- Created by IntelliJ IDEA. --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -15,7 +13,7 @@
 <div class="container">
   <div class="row  bg-light p-3">
     <div class="col">
-        <h1>Admin panel</h1>
+        <h1>${requestScope.state}</h1>
     </div>
   </div>
 </div>

@@ -1,8 +1,6 @@
 package com.bioskop.dao;
 
-import com.bioskop.dbconfig;
 import com.bioskop.model.Korisnik;
-import com.bioskop.model.Sediste;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,17 +24,33 @@ public class KorisnikDAO {
     }
 
 
-    public static String findByUserAndPass(String user, String pass) throws SQLException {
-        ps = con.prepareStatement("select tip from korisnik where username = ? and password = ?");
+    public static Korisnik findByUserAndPass(String user, String pass) throws SQLException {
+        ps = con.prepareStatement("select * from korisnik where username = ? and password = ?");
         ps.setString(1,user);
         ps.setString(2,pass);
         rs = ps.executeQuery();
         rs.next();
-        if(rs.getString(1).equals("Admin"))
-            return "admin";
-        else if(rs.getString(1).equals("User"))
-            return "user";
-        else return null;
+
+        Korisnik k = new Korisnik();
+
+        k.setBrPoena(rs.getInt("brpoena"));
+        k.setBrTel(rs.getNString("brtel"));
+        k.setDatRodj(rs.getDate("datrodj").toLocalDate());
+        k.setEmail(rs.getNString("email"));
+        k.setIdKorisnik(rs.getInt("idkorisnik"));
+        k.setImePrezime(rs.getNString("imeprezime"));
+        k.setPassword(pass);
+        k.setStatus(rs.getNString("status"));
+        k.setTip(rs.getNString("tip"));
+        k.setUsername(user);
+
+        return k;
+    }
+
+    public static int banByUser(String user) throws SQLException {
+        ps = con.prepareStatement("update korisnik set status = 'Neaktivan' where username = ?");
+        ps.setString(1, user);
+        return ps.executeUpdate();
     }
 
     public static int insert(String ImePrezime, Timestamp DatRodj, String Username, String Password, String Email, String BrTel, String Tip) throws SQLException {
@@ -50,5 +64,13 @@ public class KorisnikDAO {
         ps.setString(7, Tip);
         System.out.println(ps);
         return ps.executeUpdate();
+    }
+
+    public static void removePoints(int i, String username) throws SQLException {
+        ps = con.prepareStatement("update korisnik set brpoena = brpoena - ? where username = ?");
+        ps.setInt(1, i);
+        ps.setString(2, username);
+
+        ps.executeUpdate();
     }
 }

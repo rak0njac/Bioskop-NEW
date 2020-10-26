@@ -1,7 +1,5 @@
 package com.bioskop.dao;
 
-import com.bioskop.dbconfig;
-import com.bioskop.model.Film;
 import com.bioskop.model.Sediste;
 
 import java.sql.Connection;
@@ -61,5 +59,26 @@ public class SedisteDAO {
         sediste.setSala(Proj_SalaDAO.findById(rs.getInt("idsala")));
 
         return sediste;
+    }
+
+    public static ArrayList<Sediste> findBySala(int idSala) throws SQLException {
+        sedisteList.clear();
+
+        ps = con.prepareStatement("select * from sediste where idsala = " + idSala);
+        rs = ps.executeQuery();
+
+        while(rs.next())
+        {
+            Sediste sediste = new Sediste();
+
+            sediste.setIdSediste(rs.getInt("idsediste"));
+            sediste.setBroj(rs.getInt("broj"));
+            sediste.setTip(rs.getNString("tip"));
+            sediste.setSala(Proj_SalaDAO.findById(idSala));
+
+            sedisteList.add(sediste);
+        }
+
+        return sedisteList;
     }
 }

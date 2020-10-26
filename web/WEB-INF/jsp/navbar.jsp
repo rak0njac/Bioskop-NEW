@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light mb-5">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="/index.html">
         <img src="/res/img/connect-c-logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
         <b>Cinematic</b>
     </a>
@@ -11,11 +11,21 @@
     <div class="collapse navbar-collapse ml-5" id="navbarText">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#"><b>REPERTOAR</b></a>
+                <a class="nav-link" href="/index.html"><b>REPERTOAR</b></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">O NAMA</a>
+                <a class="nav-link" href="/onama">O NAMA</a>
             </li>
+            <c:if test="${sessionScope.admin!=null}">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">ADMIN PANEL</a>
+                </li>
+            </c:if>
+            <c:if test="${sessionScope.radnik!=null}">
+                <li class="nav-item">
+                    <a class="nav-link" href="/radnik">RADNIK PANEL</a>
+                </li>
+            </c:if>
         </ul>
         <span class="nav-item">
                 <c:choose>

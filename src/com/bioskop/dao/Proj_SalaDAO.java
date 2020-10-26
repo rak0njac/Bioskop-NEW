@@ -1,6 +1,5 @@
 package com.bioskop.dao;
 
-import com.bioskop.dbconfig;
 import com.bioskop.model.Proj_Sala;
 
 import java.sql.*;

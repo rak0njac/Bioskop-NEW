@@ -7,13 +7,12 @@
 <head>
   <title>Repertoar - Cinematic</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<%--  <link rel="stylesheet" type="text/css" href="/res/css/main.css">--%>
 </head>
 <body class="bg-dark">
 
 <form action="film" id="frmProj" method="get">
-  <input type="hidden" name="frmDatum"/>
-  <input type="hidden" name="frmId"/>
+  <input type="hidden" name="datum"/>
+  <input type="hidden" name="id"/>
 </form>
 
 <jsp:include page="navbar.jsp"/>
@@ -23,20 +22,20 @@
       <form class="mb-5">
         <div class="row">
           <div class="col-3">
-              <label for="inputMultiplex">Multiplex</label>
-              <select class="form-control mr-2" id="inputMultiplex">
+              <label for="mul">Multiplex</label>
+              <select class="form-control mr-2" id="mul">
 <%--                <option value="ALL">Svi</option>--%>
                 <c:forEach items="${requestScope.mul}" var="m">
-                  <option value="${m.naziv}">${m.naziv}</option>
+                  <option value="${m}">${m}</option>
                 </c:forEach>
               </select>
           </div>
           <div class="col-3">
-            <label for="inputDatum">Datum</label>
-            <select class="form-control mr-2" id="inputDatum">
+            <label for="datum">Datum</label>
+            <select class="form-control mr-2" id="datum">
 <%--              <option value="ALL">Svi</option>--%>
               <c:forEach items="${requestScope.dat}" var="d">
-                <option value="${d}">${d}</option>
+                <option value="${d.date}">${d.displayDate}</option>
               </c:forEach>
             </select>
           </div>
@@ -65,9 +64,9 @@
   })
 
   function loadMovies(){
-      var datum = $("#inputDatum").val()
-      $('input[name ="frmDatum"]').val(datum)
-      var mplex = $("#inputMultiplex").val()
+      var datum = $("#datum").val()
+      $('input[name ="datum"]').val(datum)
+      var mplex = $("#mul").val()
       $.get( "/listaProjekcija", { datum: datum, mplex: mplex }, function( data ) {
           $("#movieList").hide()
           $( "#movieList" ).html( data )
@@ -76,7 +75,7 @@
   }
 
   $("#movieList").on("click", ".btn-projekcija", function() {
-    $('input[name ="frmId"]').val($(this).val())
+    $('input[name ="id"]').val($(this).val())
     $("#frmProj").submit();
   })
 </script>
