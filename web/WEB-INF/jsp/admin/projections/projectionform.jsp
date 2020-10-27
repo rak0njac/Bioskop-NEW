@@ -86,7 +86,7 @@
         })
         $("#inputSediste").empty()
         distinct.forEach(function (value, value2, set) {
-            $("#inputSediste").append("<div class='sediste'>" + value + "</div>")
+            $("#inputSediste").append("<div class='sediste' style='display: none'>" + value + "</div>")
         })
     })
 
@@ -106,9 +106,16 @@
 
         $("#sala").val(idSala)
         $("#sala").attr("disabled", false)
+
+        updateSediste()
     })
 
     $("#sala").change( function () {
+        updateSediste()
+    })
+
+    function updateSediste()
+    {
         $(".sediste").show()
 
         //var distinct = new Set()
@@ -127,9 +134,10 @@
                 var tip = $(this).find("input").attr("data-tip")
                 $(this).find("input").attr("name", "cena" + tip)
             }
-           // else distinct.add($(this).html())
+            // else distinct.add($(this).html())
         })
-    })
+
+    }
 
 </script>
 

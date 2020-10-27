@@ -3,6 +3,7 @@ package com.bioskop.servlet.user.projekcija;
 import com.bioskop.dao.KartaDAO;
 import com.bioskop.dao.KorisnikDAO;
 import com.bioskop.model.Karta;
+import com.bioskop.model.Korisnik;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +26,7 @@ public class rezervacija extends HttpServlet {
             String tipSedista = req.getParameter("sediste");
             int idProjekcija = Integer.parseInt(req.getParameter("projekcija"));
             System.out.println(req.getParameter("sediste") + " " + req.getParameter("projekcija"));
-            String username = (String) req.getSession().getAttribute("user");
+            Korisnik k = (Korisnik)req.getSession().getAttribute("user");
             int kolicina = Integer.parseInt(req.getParameter("kolicina"));
             Boolean popust10 = Boolean.parseBoolean(req.getParameter("popust10"));
             Boolean popust25 = Boolean.parseBoolean(req.getParameter("popust25"));
@@ -38,14 +39,14 @@ public class rezervacija extends HttpServlet {
                     if(popust10)
                     {
                         KartaDAO.discount(karta, 10);
-                        KorisnikDAO.removePoints(100, username);
+                        KorisnikDAO.removePoints(100, k.getUsername());
                     }
                     else if(popust25)
                     {
                         KartaDAO.discount(karta, 25);
-                        KorisnikDAO.removePoints(250, username);
+                        KorisnikDAO.removePoints(250, k.getUsername());
                     }
-                    state = KartaDAO.reserveTicket(karta, username);
+                    state = KartaDAO.reserveTicket(karta, k.getUsername());
                 }
 
                 req.setAttribute("state", state);

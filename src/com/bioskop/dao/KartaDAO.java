@@ -1,6 +1,7 @@
 package com.bioskop.dao;
 
 import com.bioskop.model.Karta;
+import com.bioskop.model.Projekcija;
 import com.bioskop.model.Sediste;
 
 import java.sql.Connection;
@@ -96,8 +97,21 @@ public class KartaDAO {
         else return "NEMA KARATA";
     }
 
-    public static int insert(int idProjekcija, int idSediste) throws SQLException {
-        ps = con.prepareStatement("insert into karta(idprojekcija, idsediste, cena) values ?, ?, ?");
+    public static int insert(Projekcija projekcija, String tipSedista, Double cena) throws SQLException {
+        ps = con.prepareStatement("select * from sediste where idsala = ?");
+        ps.setInt(1, projekcija.getSala().getIdSala());
+        rs = ps.executeQuery();
+        while(rs.next())
+        {
+            if(rs.getString("tip").equals(tipSedista))
+            {
+                ps = con.prepareStatement("insert into karta(idprojekcija, idsediste, cena) values (?,?,?)");
+                ps.setInt(1,projekcija.getIdProjekcija());
+                ps.setInt(2, rs.getInt("idsediste"));
+                ps.setDouble(3, cena);
+                ps.executeUpdate();
+            }
+        }
         return -1;
     }
 
@@ -108,6 +122,25 @@ public class KartaDAO {
         ps.setInt(2, karta.getIdKarta());
 
         ps.executeUpdate();
+    }
+
+    public static ArrayList<Karta> findByIdProj(int idProjekcija) throws SQLException {
+        kartaList.clear();
+        ps = con.prepareStatement("select * from karta where idprojekcija = ?");
+        ps.setInt(1, idProjekcija);
+        rs = ps.executeQuery();
+        while(rs.next())
+        {
+            Karta karta = new Karta();
+            karta.setIdKarta(rs.getInt("idkarta"));
+            karta.setCena(rs.getDouble("cena"));
+            //karta.setProjekcija(ProjekcijaDAO.findById(idProjekcija));
+            karta.setSediste(SedisteDAO.findById(rs.getInt("idsediste")));
+            karta.setStatus(rs.getNString("status"));
+            karta.setKorisnik(KorisnikDAO.findById(rs.getInt("idkorisnik")));
+            kartaList.add(karta);
+        }
+        return kartaList;
     }
 
 //    public static ArrayList<Film> findAll() throws SQLException {

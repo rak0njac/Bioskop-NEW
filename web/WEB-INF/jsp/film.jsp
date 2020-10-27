@@ -63,7 +63,7 @@
                 </c:forEach>
               </select>
               <div id="inputKolicina" style="display: none">
-                Kolicina:<input type="number" value="1" name="kolicina" class="form-group ml-2">
+                Kolicina:<input type="number" min="1" value="1" name="kolicina" class="form-group ml-2">
               </div>
             </div>
             <select style="display: none" id="hiddenSediste">
@@ -78,12 +78,11 @@
               </select>
               <input type="submit" id="btnRez" style="display: none" class="btn btn-danger" data-user="${sessionScope.user}" style="width: 100%" value="REZERVISI">
             </div>
-
           </div>
-                        <c:if test="${sessionScope.user.getBrPoena} > 100">
+                        <c:if test="${sessionScope.user.brPoena > 100}">
           <input type="checkbox" name="popust10"> Aktiviraj 10% popusta (100 poena)<br>
                         </c:if>
-                        <c:if test="${sessionScope.user.getBrPoena} > 200">
+                        <c:if test="${sessionScope.user.brPoena > 200}">
           <input type="checkbox" name="popust25"> Aktiviraj 25% popusta (200 poena)
                         </c:if>
 
@@ -98,7 +97,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <script>
-
   var options = {}
   var opt = []
 
@@ -191,7 +189,7 @@ $("#inputDatum").change(function(){
         {
           stringArray.push(current + ' (' + cnt + ')')
           var cena = $("#hiddenSediste").find("option[value='" + current + "'][data-id=" + projekcija + "]").attr("data-cena")
-          $("#inputSediste").append("<option value='" + current + "' data-cena='" + cena + "'>" + current + " (" + cnt + ")" + "</option>")
+          $("#inputSediste").append("<option value='" + current + "' data-cena='" + cena + "' data-cnt='" + cnt + "'>" + current + " (" + cnt + ")" + "</option>")
           //$("#inputKolicina > input").val(1)
           //$("#inputKolicina > input").attr("max", cnt)
           //console.log(current + ' (' + cnt + ')');

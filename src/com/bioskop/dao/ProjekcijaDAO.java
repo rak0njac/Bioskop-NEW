@@ -1,9 +1,6 @@
 package com.bioskop.dao;
 
-import com.bioskop.model.Film;
-import com.bioskop.model.Multiplex;
-import com.bioskop.model.Proj_Sala;
-import com.bioskop.model.Projekcija;
+import com.bioskop.model.*;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -46,6 +43,7 @@ public class ProjekcijaDAO {
             proj.setVremePocetka(rs.getTimestamp("vremepocetka").toLocalDateTime());
             proj.setZavrseno(rs.getBoolean("zavrseno"));
             proj.setSala(Proj_SalaDAO.findById(rs.getInt("idSala")));
+            proj.setKarte((ArrayList<Karta>) KartaDAO.findByIdProj(proj.getIdProjekcija()).clone());
             projList.add(proj);
         }
         return projList;
@@ -203,12 +201,20 @@ public class ProjekcijaDAO {
     }
 
     public static int insert(Projekcija proj) throws SQLException {
-        ps = con.prepareStatement("insert into projekcija (idfilm, idsala, vremepocetka, premijera) values (?,?,?,?)");
+        ps = con.prepareStatement("insert into projekcija (idfilm, idsala, vremepocetka, premijera) values (?,?,?,?)", ps.RETURN_GENERATED_KEYS);
         ps.setInt(1, proj.getFilm().getIdFilm());
         ps.setInt(2, proj.getSala().getIdSala());
         ps.setTimestamp(3, Timestamp.valueOf(proj.getVremePocetka()));
         ps.setBoolean(4, proj.isPremijera());
+        ps.executeUpdate();
 
-        return ps.executeUpdate();
+        try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            }
+            else {
+                throw new SQLException("Creating user failed, no ID obtained.");
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.bioskop.servlet.reglog;
 
 import com.bioskop.dao.KorisnikDAO;
+import com.bioskop.model.Korisnik;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,16 +21,24 @@ public class login extends HttpServlet
 
 
         try {
-            if(KorisnikDAO.findByUserAndPass(user, pass).getTip().equals("User"))
+            Korisnik k = KorisnikDAO.findByUserAndPass(user, pass);
+
+            if(k.getTip().equals("User"))
             {
-                req.getSession().setAttribute("user", user);
+                req.getSession().setAttribute("user", k);
                 resp.sendRedirect("/index.html");
             }
-            else if(KorisnikDAO.findByUserAndPass(user, pass).getTip().equals("Admin"))
+            else if(k.getTip().equals("Admin"))
             {
-                req.getSession().setAttribute("user", "admin");
-                req.getSession().setAttribute("admin", user);
+                //req.getSession().setAttribute("user", k);
+                req.getSession().setAttribute("admin", k);
                 resp.sendRedirect("/admin");
+            }
+            else if(k.getTip().equals("Radnik"))
+            {
+                //req.getSession().setAttribute("user", user);
+                req.getSession().setAttribute("radnik", k);
+                resp.sendRedirect("/radnik");
             }
             else
             {

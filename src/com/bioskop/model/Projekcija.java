@@ -2,6 +2,7 @@ package com.bioskop.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Projekcija implements Serializable {
     public Projekcija() {
@@ -13,6 +14,7 @@ public class Projekcija implements Serializable {
     private LocalDateTime vremePocetka;
     private boolean zavrseno;
     private boolean premijera;
+    private ArrayList<Karta> karte;
 
     public int getIdProjekcija() {
         return idProjekcija;
@@ -62,4 +64,11 @@ public class Projekcija implements Serializable {
         this.premijera = premijera;
     }
 
+    public ArrayList<Karta> getKarte() {
+        return karte;
+    }
+
+    public void setKarte(ArrayList<Karta> karte) {
+        this.karte = karte;
+    }
 }

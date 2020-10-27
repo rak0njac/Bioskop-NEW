@@ -14,9 +14,9 @@
       <div class="row">
         <div class="col">
           <c:choose>
-            <c:when test="${p.premijera} = true}">
+            <c:when test="${p.premijera == true}">
               <c:choose>
-                <c:when test="${sessionScope.user.brPoena} < 500">
+                <c:when test="${sessionScope.user.brPoena < 500}">
                   <span style="font-size: 150%;padding: 0; color:#ff0000;">PREMIJERA - ${p.film.naziv}</span>
                 </c:when>
                 <c:otherwise>

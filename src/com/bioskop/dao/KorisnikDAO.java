@@ -73,4 +73,27 @@ public class KorisnikDAO {
 
         ps.executeUpdate();
     }
+
+    public static Korisnik findById(int idkorisnik) throws SQLException {
+        ps = con.prepareStatement("select * from korisnik where idkorisnik = ?");
+        ps.setInt(1, idkorisnik);
+        rs = ps.executeQuery();
+        if(rs.next())
+        {
+            Korisnik k = new Korisnik();
+
+            k.setBrPoena(rs.getInt("brpoena"));
+            k.setBrTel(rs.getNString("brtel"));
+            k.setDatRodj(rs.getDate("datrodj").toLocalDate());
+            k.setEmail(rs.getNString("email"));
+            k.setIdKorisnik(idkorisnik);
+            k.setImePrezime(rs.getNString("imeprezime"));
+            k.setStatus(rs.getNString("status"));
+            k.setTip(rs.getNString("tip"));
+            k.setUsername(rs.getNString("username"));
+
+            return k;
+        }
+        else return null;
+    }
 }

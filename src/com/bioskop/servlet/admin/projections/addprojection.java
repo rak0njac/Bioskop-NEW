@@ -13,8 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 
 @WebServlet("/admin/projections/addprojection")
 public class addprojection extends HttpServlet {
@@ -78,17 +77,32 @@ public class addprojection extends HttpServlet {
                 LocalTime time = LocalTime.parse(req.getParameter("vreme"));
                 LocalDateTime dateTime = LocalDateTime.of(date, time);
                 proj.setVremePocetka(dateTime);
+                ArrayList<String> tipoviSedista = new ArrayList<>();
+                Map<String, Double> tipovi = new HashMap<>();
+                for(Enumeration<String> s = req.getParameterNames(); s.hasMoreElements();){
+                    String par = s.nextElement();
+                    System.out.println(par);
+                    if(par.contains("cena")){
+                        tipovi.put(par.replace("cena", ""), Double.parseDouble(req.getParameter(par)));
+                    }
+                }
+
+                System.out.println(tipovi);
 
                 proj.setSala(Proj_SalaDAO.findById(Integer.parseInt(req.getParameter("sala"))));
                 proj.setPremijera(Boolean.parseBoolean(req.getParameter("premijera")));
 
-                ProjekcijaDAO.insert(proj);
+
+                proj.setIdProjekcija(ProjekcijaDAO.insert(proj));
 
                 ArrayList<Sediste> sedista = SedisteDAO.findBySala(proj.getSala().getIdSala());
-                for(Sediste s : sedista)
-                {
-                    KartaDAO.insert(proj.getIdProjekcija(), s.getIdSediste());
+                for (Map.Entry<String, Double> entry : tipovi.entrySet()) {
+                    KartaDAO.insert(proj, entry.getKey(), entry.getValue());
                 }
+                //for( s : sedista)
+                //{
+                //    KartaDAO.insert(proj.getIdProjekcija(), s.getIdSediste());
+                //}
                 req.setAttribute("state", "USPESNO UBACENA PROJEKCIJA");
                 req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
             } catch (SQLException throwables) {
