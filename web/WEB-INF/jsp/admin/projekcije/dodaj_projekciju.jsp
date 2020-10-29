@@ -5,7 +5,7 @@
 
 <html>
 <head>
-    <title>Repertoar - Cinematic</title>
+    <title>Nova projekcija - Cinematic</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body class="bg-dark">
@@ -15,10 +15,6 @@
 <div class="container">
     <div class="row  bg-light p-3">
         <div class="col">
-            <h1>Admin panel</h1>
-            <div class="alert alert-danger" role="alert">
-                Mole se administratori da budu izuzetno pazljivi prilikom koriscenja administratorskih opcija. Pre izvrsavanja bilo koje radnje, dvaput proverite da li ste sigurni da istu uopste zelite da izvrsite, kao i da li su svi uneti podaci tacni. Svaka zloupotreba podleze krivicnoj odgovornosti.
-            </div>
             <h3>Nova projekcija - odaberite film iz liste</h3>
             <table class="table">
                 <thead>
@@ -34,7 +30,7 @@
                 <tbody>
                     <c:forEach items="${requestScope.filmovi}" var="m">
                         <tr>
-                            <form action="/admin/projections/addprojection" method="get">
+                            <form action="/admin/projekcije/dodaj_projekciju" method="get">
                                 <input name="id" type="hidden" value="${m.idFilm}"/>
                                 <td>${m.naziv}</td>
                                 <td>${m.zanr}</td>

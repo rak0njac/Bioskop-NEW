@@ -19,19 +19,19 @@ public class zabraniPristup extends HttpServlet {
 
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin"))
         {
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
             String username = req.getParameter("username");
             try {
                 KorisnikDAO.banByUser(username);
-            req.setAttribute("state", "USPESNO BANOVAN");
+            req.getSession().setAttribute("state", "USPESNO BANOVAN");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-                req.setAttribute("state", "GRESKA PRILIKOM BANOVANJA KORISNIKA");
+                req.getSession().setAttribute("state", "GRESKA PRILIKOM BANOVANJA KORISNIKA");
             }
-            req.getRequestDispatcher("/WEB-INF/jsp/admin/korisnici/zabrani_pristup.jsp").forward(req, resp);
+                resp.sendRedirect("/admin/korisnici/zabrani_pristup");
         }
     }
 
@@ -39,10 +39,11 @@ public class zabraniPristup extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin"))
         {
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
+
             req.getRequestDispatcher("/WEB-INF/jsp/admin/korisnici/zabrani_pristup.jsp").forward(req, resp);
         }
     }

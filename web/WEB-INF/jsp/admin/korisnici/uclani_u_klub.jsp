@@ -5,7 +5,7 @@
 
 <html>
 <head>
-  <title>Repertoar - Cinematic</title>
+  <title>Uclani u klub - Cinematic</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body class="bg-dark">
@@ -15,12 +15,8 @@
 <div class="container">
   <div class="row  bg-light p-3">
     <div class="col">
-        <h1>Admin panel</h1>
-      <div class="alert alert-danger" role="alert">
-        Mole se administratori da budu izuzetno pazljivi prilikom koriscenja administratorskih opcija. Pre izvrsavanja bilo koje radnje, dvaput proverite da li ste sigurni da istu uopste zelite da izvrsite, kao i da li su svi uneti podaci tacni. Svaka zloupotreba podleze krivicnoj odgovornosti.
-      </div>
         <h3>Unesite username korisnika koji se uclanjuje u klub:</h3>
-      <form action="/admin/users/clubenroll" method="post">
+      <form action="/admin/korisnici/uclani_u_klub" method="post">
         <input type="text" name="username"><br>
         <label for="klub">Klub za uclanjenje:</label>
         <select id="klub" name="klub">

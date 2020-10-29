@@ -1,11 +1,11 @@
-$("#btnLogin").click(function () {
+$("#btn-login").click(function () {
     $("#modalLogin").modal()
 })
 
-$("#btnLogout").click(function () {
+$("#btn-logout").click(function () {
     window.location.href = "/logout";
 })
 
-$("#btnReg").click(function () {
+$("#btn-registracija").click(function () {
     window.location.href = "/registracija";
 })

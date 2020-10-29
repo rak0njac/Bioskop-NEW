@@ -17,7 +17,7 @@ public class uclaniUKlub extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin")){
 
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
@@ -25,12 +25,12 @@ public class uclaniUKlub extends HttpServlet {
             String klub = req.getParameter("klub");
             try {
                 KorisnikDAO.enrollInClub(username, klub);
-                req.setAttribute("state", "USPESNO DODAT U KLUB");
+                req.getSession().setAttribute("state", "USPESNO DODAT U KLUB");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-            req.setAttribute("state", "GRESKA PRILIKOM DODAVANJA U KLUB");
+            req.getSession().setAttribute("state", "GRESKA PRILIKOM DODAVANJA U KLUB");
         }
-            req.getRequestDispatcher("/WEB-INF/jsp/admin/korisnici/uclani_u_klub.jsp").forward(req, resp);
+            resp.sendRedirect("/admin/korisnici/uclani_u_klub");
         }
     }
 
@@ -38,10 +38,11 @@ public class uclaniUKlub extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin")){
 
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
+
             req.getRequestDispatcher("/WEB-INF/jsp/admin/korisnici/uclani_u_klub.jsp").forward(req, resp);
         }
     }

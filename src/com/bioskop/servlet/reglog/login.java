@@ -28,36 +28,41 @@ public class login extends HttpServlet
 
             if(k == null)
             {
-                req.setAttribute("state", "NETACNI PODACI");
+                req.getSession().setAttribute("state", "NETACNI PODACI");
                 req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req,resp);
             }
             else if(k.getStatus().equals("Neaktivan")){
-                req.setAttribute("state", "ZABRANJEN PRISTUP");
+                req.getSession().setAttribute("state", "ZABRANJEN PRISTUP");
                 req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req,resp);
             }
             else if(k.getTip().equals("User"))
             {
                 req.getSession().setAttribute("user", k);
+
+
                 resp.sendRedirect("/index.html");
             }
             else if(k.getTip().equals("Admin"))
             {
                 req.getSession().setAttribute("user", k);
+
+
                 resp.sendRedirect("/admin");
             }
             else if(k.getTip().equals("Radnik"))
             {
                 req.getSession().setAttribute("user", k);
+
                 resp.sendRedirect("/radnik");
             }
             else{
-                req.setAttribute("state", "GRESKA");
+                req.getSession().setAttribute("state", "GRESKA");
                 req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req,resp);
             }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            req.setAttribute("state", "GRESKA");
+            req.getSession().setAttribute("state", "GRESKA");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req,resp);
         }
     }

@@ -51,10 +51,10 @@ public class KorisnikDAO {
 else return null;
     }
 
-    public static int banByUser(String user) throws SQLException {
+    public static void banByUser(String user) throws SQLException {
         ps = con.prepareStatement("update korisnik set status = 'Neaktivan' where username = ?");
         ps.setString(1, user);
-        return ps.executeUpdate();
+        ps.executeUpdate();
     }
 
     public static int insert(Korisnik k) throws SQLException {
@@ -67,7 +67,6 @@ else return null;
         ps.setString(6, k.getBrTel());
         ps.setString(7, k.getTip());
 
-        System.out.println(ps);
         ps.executeUpdate();
 
         rs = ps.getGeneratedKeys();
@@ -115,7 +114,7 @@ else return null;
         ps.executeUpdate();
     }
 
-    public static int update(Korisnik k) throws SQLException {
+    public static void update(Korisnik k) throws SQLException {
         ps = con.prepareStatement("update korisnik set email = ?, imeprezime = ?, brtel = ?, datrodj = ?, password = ? where idkorisnik = ?");
         ps.setString(1, k.getEmail());
         ps.setString(2, k.getImePrezime());
@@ -124,13 +123,13 @@ else return null;
         ps.setString(5, k.getPassword());
         ps.setInt(6, k.getIdKorisnik());
 
-        return ps.executeUpdate();
+        ps.executeUpdate();
     }
 
-    public static int enrollInClub(String username, String klub) throws SQLException {
+    public static void enrollInClub(String username, String klub) throws SQLException {
         ps = con.prepareStatement("update korisnik set klub = ? where username = ?");
         ps.setString(1, klub);
         ps.setString(2, username);
-        return ps.executeUpdate();
+        ps.executeUpdate();
     }
 }

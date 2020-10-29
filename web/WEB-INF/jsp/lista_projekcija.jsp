@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:if test="${requestScope.atr.isEmpty()}">
+<c:if test="${requestScope.projekcije.isEmpty()}">
   <h1>Nema filmova prema izabranim kriterijumima!</h1>
 </c:if>
-<c:forEach items="${requestScope.atr}" var="p">
+<c:forEach items="${requestScope.projekcije}" var="p">
 
   <div class="row bg-light p-3 film mb-2" style="outline: #343a40 solid 5px">
     <div class="col-3">
@@ -40,14 +40,10 @@
         <div class="col-6" style="display: -webkit-box;
             -webkit-line-clamp: 6;
             -webkit-box-orient: vertical;
-            overflow: hidden;"
-             align="justify">
+            overflow: hidden;" align="justify">
           ${p.film.opis}
         </div>
       </div>
-
     </div>
   </div>
-
-
 </c:forEach>

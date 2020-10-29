@@ -22,10 +22,11 @@ public class registrujAdmina extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin")){
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else {
+
             req.getRequestDispatcher("/WEB-INF/jsp/admin/korisnici/registruj_admina.jsp").forward(req,resp);
         }
 
@@ -35,7 +36,7 @@ public class registrujAdmina extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //TODO: Validacija u JSP
-
+        try {
         Korisnik k = new Korisnik();
 
         k.setUsername(req.getParameter("username"));
@@ -49,14 +50,14 @@ public class registrujAdmina extends HttpServlet
         k.setBrPoena(0);
 
 
-        try {
+
             k.setIdKorisnik(KorisnikDAO.insert(k));
             req.getSession().setAttribute("user", k);
-            req.setAttribute("state", "USPESNO REGISTROVAN ADMIN");
-            req.getRequestDispatcher("/WEB-INF/jsp/admin/admin.jsp").forward(req, resp);
-        } catch (SQLException throwables) {
+            req.getSession().setAttribute("state", "USPESNO REGISTROVAN ADMIN");
+            resp.sendRedirect("/admin");
+        } catch (Exception throwables) {
             throwables.printStackTrace();
-            req.setAttribute("state", "GRESKA PRILIKOM REGISTROVANJA ADMINA");
+            req.getSession().setAttribute("state", "GRESKA PRILIKOM REGISTROVANJA ADMINA");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
 

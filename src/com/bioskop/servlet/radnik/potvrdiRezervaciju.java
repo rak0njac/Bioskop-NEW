@@ -17,7 +17,7 @@ public class potvrdiRezervaciju extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Radnik")) {
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else {
@@ -26,12 +26,12 @@ public class potvrdiRezervaciju extends HttpServlet {
             try {
                 KorisnikDAO.addPoints((Korisnik) req.getSession().getAttribute("user"), idKarta);
                 KartaDAO.approveReservation(idKarta);
-                req.setAttribute("state", "USPESNO POTVRDJENA REZERVACIJA");
-                req.getRequestDispatcher("/WEB-INF/jsp/radnik/radnik.jsp").forward(req, resp);
+                req.getSession().setAttribute("state", "USPESNO POTVRDJENA REZERVACIJA");
+                resp.sendRedirect("/radnik");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-                req.setAttribute("state", "GRESKA PRILIKOM POTVRDE REZERVACIJE");
-                req.getRequestDispatcher("/WEB-INF/jsp/radnik/radnik.jsp").forward(req, resp);
+                req.getSession().setAttribute("state", "GRESKA PRILIKOM POTVRDE REZERVACIJE");
+                resp.sendRedirect("/radnik");
             }
         }
     }

@@ -1,10 +1,12 @@
-package com.bioskop.servlet.korisnik.film;
+package com.bioskop.servlet;
 
 import com.bioskop.dao.KartaDAO;
+import com.bioskop.dao.MultiplexDAO;
 import com.bioskop.dao.ProjekcijaDAO;
 import com.bioskop.helpers.DateHelper;
 import com.bioskop.model.Film;
 import com.bioskop.model.Karta;
+import com.bioskop.model.Multiplex;
 import com.bioskop.model.Projekcija;
 
 import javax.servlet.ServletException;
@@ -24,15 +26,16 @@ public class film extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        int idProjekcija = Integer.parseInt(req.getParameter("projId"));
-        int idMultiplex = Integer.parseInt(req.getParameter("mplexId"));
+        int idProjekcija = Integer.parseInt(req.getParameter("id-projekcija"));
+        int idMultiplex = Integer.parseInt(req.getParameter("id-multiplex"));
 
         Set<DateHelper> datumi = new HashSet<>();
 
         try {
             Projekcija projekcija = ProjekcijaDAO.findById(idProjekcija);
             Film film = projekcija.getFilm();
-            ArrayList<Karta> karte = KartaDAO.findByIdFilmIdMplex(film.getIdFilm(), idMultiplex);
+            Multiplex multiplex = MultiplexDAO.findById(idMultiplex);
+            ArrayList<Karta> karte = KartaDAO.findByFilmMplex(film, multiplex);
 
             for(Karta k : karte)
             {
@@ -43,10 +46,11 @@ public class film extends HttpServlet {
             req.setAttribute("film", film);
             req.setAttribute("karte", karte);
 
+
             req.getRequestDispatcher("/WEB-INF/jsp/film.jsp").forward(req, resp);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            req.setAttribute("state", "GRESKA PRILIKOM POTRAZIVANJA FILMA");
+            req.getSession().setAttribute("state", "GRESKA PRILIKOM POTRAZIVANJA FILMA");
             req.getRequestDispatcher("/WEB-INF/jsp/film.jsp").forward(req,resp);
         }
     }

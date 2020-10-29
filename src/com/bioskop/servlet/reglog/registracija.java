@@ -22,6 +22,7 @@ public class registracija extends HttpServlet
 {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         req.getRequestDispatcher("/WEB-INF/jsp/registracija.jsp").forward(req,resp);
     }
 
@@ -44,12 +45,12 @@ public class registracija extends HttpServlet
         try {
             k.setIdKorisnik(KorisnikDAO.insert(k));
             req.getSession().setAttribute("user", k);
-            req.setAttribute("state", "USPESNA REGISTRACIJA. ULOGOVANI STE.");
-            req.getRequestDispatcher("/WEB-INF/jsp/index.jsp").forward(req,resp);
+            req.getSession().setAttribute("state", "USPESNA REGISTRACIJA. ULOGOVANI STE.");
+            resp.sendRedirect("/index.html");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            req.setAttribute("state", "GRESKA PRILIKOM REGISTRACIJE");
-            req.getRequestDispatcher("/WEB-INF/jsp/registracija.jsp").forward(req,resp);
+            req.getSession().setAttribute("state", "GRESKA PRILIKOM REGISTRACIJE");
+            resp.sendRedirect("/registracija");
         }
     }
 }

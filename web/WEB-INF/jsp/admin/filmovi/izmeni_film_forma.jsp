@@ -5,7 +5,7 @@
 
 <html>
 <head>
-  <title>Repertoar - Cinematic</title>
+  <title>Izmena filma - Cinematic</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body class="bg-dark">
@@ -15,25 +15,25 @@
 <div class="container">
   <div class="row  bg-light p-3">
     <div class="col">
-        <form action="/admin/movies/editmovie" method="post" class="form-horizontal" role="form">
+        <form action="/admin/filmovi/izmeni_film" method="post" class="form-horizontal" role="form">
             <input type="hidden" name="id" value="${film.idFilm}">
             <h2>Novi film</h2>
             <div class="form-group">
                 <label for="naziv" class="col-sm-3 control-label">Naziv</label>
                 <div class="col-sm-9">
-                    <input type="text" id="naziv" name="naziv" placeholder="Naziv" value="${film.naziv}" class="form-control" autofocus>
+                    <input type="text" id="naziv" name="naziv" placeholder="Naziv" value="${film.naziv}" class="form-control">
                 </div>
             </div>
             <div class="form-group">
                 <label for="zanr" class="col-sm-3 control-label">Zanr</label>
                 <div class="col-sm-9">
-                    <input type="text" id="zanr" name="zanr" placeholder="Zanr" value="${film.zanr}" class="form-control" autofocus>
+                    <input type="text" id="zanr" name="zanr" placeholder="Zanr" value="${film.zanr}" class="form-control">
                 </div>
             </div>
             <div class="form-group">
                 <label for="reziser" class="col-sm-3 control-label">Reziser</label>
                 <div class="col-sm-9">
-                    <input type="text" id="reziser" name="reziser" placeholder="Reziser" value="${film.reziser}" class="form-control" autofocus>
+                    <input type="text" id="reziser" name="reziser" placeholder="Reziser" value="${film.reziser}" class="form-control">
                 </div>
             </div>
             <div class="form-group">
@@ -51,7 +51,7 @@
             <div class="form-group">
                 <label for="opis" class="col-sm-3 control-label">Opis</label>
                 <div class="col-sm-9">
-                    <textarea id="opis" name="opis" class="form-control">${film.opis}</textarea>
+                    <textarea rows="10" id="opis" name="opis" class="form-control">${film.opis}</textarea>
                 </div>
             </div>
             <div class="form-group">
@@ -68,7 +68,7 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Gotovo</button>
-        </form> <!-- /form -->
+        </form>
 
     </div>
   </div>

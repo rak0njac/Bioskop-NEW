@@ -16,12 +16,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="/onama">O NAMA</a>
             </li>
-            <c:if test="${sessionScope.admin!=null}">
+            <c:if test="${sessionScope.user.tip=='Admin'}">
                 <li class="nav-item">
                     <a class="nav-link" href="/admin">ADMIN PANEL</a>
                 </li>
             </c:if>
-            <c:if test="${sessionScope.radnik!=null}">
+            <c:if test="${sessionScope.user.tip=='Radnik'}">
                 <li class="nav-item">
                     <a class="nav-link" href="/radnik">RADNIK PANEL</a>
                 </li>
@@ -35,12 +35,12 @@
         <span class="nav-item">
                 <c:choose>
                     <c:when test="${sessionScope.user != null}">
-                        <button id="btnLogout" type="button" class="btn btn-dark">
+                        <button id="btn-logout" type="button" class="btn btn-dark">
                             ODJAVA
                         </button>
                     </c:when>
                     <c:otherwise>
-                        <button id="btnLogin" type="button" class="btn btn-dark">
+                        <button id="btn-login" type="button" class="btn btn-dark">
                             PRIJAVA
                         </button>
                     </c:otherwise>
@@ -60,15 +60,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                    <label class="control-label" for="loginUser">Korisnicko ime:</label>
-                    <input class="form-control" type="text" id="loginUser" name="user"/>
-                    <label class="control-label" for="loginPwd">Lozinka:</label>
-                    <input class="form-control" type="password" id="loginPwd" name="pass"/>
+                    <label class="control-label" for="login-user">Korisnicko ime:</label>
+                    <input class="form-control" type="text" id="login-user" name="user"/>
+                    <label class="control-label" for="login-pass">Lozinka:</label>
+                    <input class="form-control" type="password" id="login-pass" name="pass"/>
 
             </div>
             <div class="modal-footer">
                 <input type="submit" value="Prijava" class="btn btn-primary"/>
-                <button id="btnReg" type="button" class="btn btn-secondary">Registracija</button>
+                <button id="btn-registracija" type="button" class="btn btn-secondary">Registracija</button>
             </div>
         </div>
     </div>

@@ -65,7 +65,7 @@ public class FilmDAO {
     }
 
     public static int insert(Film film) throws SQLException {
-        ps = con.prepareStatement("insert into film(naziv, zanr, reziser, godina, trajanje, opis, urltrailer, coverpath) values (?,?,?,?,?,?,?,?)");
+        ps = con.prepareStatement("insert into film(naziv, zanr, reziser, godina, trajanje, opis, urltrailer, coverpath) values (?,?,?,?,?,?,?,?)", ps.RETURN_GENERATED_KEYS);
         ps.setString(1, film.getNaziv());
         ps.setString(2, film.getZanr());
         ps.setString(3, film.getReziser());
@@ -75,7 +75,11 @@ public class FilmDAO {
         ps.setString(7, film.getUrlTrailer());
         ps.setString(8, film.getCoverPath());
 
-        return ps.executeUpdate();
+        ps.executeUpdate();
+
+        rs = ps.getGeneratedKeys();
+        rs.next();
+        return rs.getInt(1);
     }
 
     public static int update(Film film) throws SQLException {

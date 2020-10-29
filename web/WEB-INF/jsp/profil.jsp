@@ -3,7 +3,7 @@
 
 <html>
 <head>
-    <title>Repertoar - Cinematic</title>
+    <title>Moj profil - Cinematic</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body class="bg-dark">
@@ -53,17 +53,17 @@
             <br>
             <h5>Izmena podataka:</h5>
             <form action="/profil" method="post" class="form-horizontal">
-                <input type="hidden" name="idKorisnik" value="${sessionScope.user.idKorisnik}">
+<%--                <input type="hidden" name="id-korisnik" value="${sessionScope.user.idKorisnik}">--%>
                 <div class="form-group">
-                    <label for="imePrezime" class="control-label">Ime i prezime:</label>
+                    <label for="ime-prezime" class="control-label">Ime i prezime:</label>
                     <div class="col-sm-9">
-                        <input type="text" id="imePrezime" name="imePrezime" value="${sessionScope.user.imePrezime}" class="form-control">
+                        <input type="text" id="ime-prezime" name="ime-prezime" value="${sessionScope.user.imePrezime}" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="datRodj" class="control-label">Datum rodjenja:</label>
+                    <label for="dat-rodj" class="control-label">Datum rodjenja:</label>
                     <div class="col-sm-9">
-                        <input type="date" id="datRodj" name="datRodj" value="${sessionScope.user.datRodj}" class="form-control">
+                        <input type="date" id="dat-rodj" name="dat-rodj" value="${sessionScope.user.datRodj}" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">
@@ -73,24 +73,24 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="brTel" class="control-label">Broj telefona:</label>
+                    <label for="br-tel" class="control-label">Broj telefona:</label>
                     <div class="col-sm-9">
 
-                    <input type="text" id="brTel" name="brTel" value="${sessionScope.user.brTel}" class="form-control">
+                    <input type="text" id="br-tel" name="br-tel" value="${sessionScope.user.brTel}" class="form-control">
                 </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block" name="submit" value="izmena-podataka">Sacuvaj</button>
                 <h5 class="mt-3">Promena lozinke</h5>
                 <div class="form-group">
-                    <label for="oldPass" class="control-label">Stara lozinka:</label>
+                    <label for="old-pass" class="control-label">Stara lozinka:</label>
                     <div class="col-sm-9">
-                        <input type="text" id="oldPass" name="oldPass" class="form-control">
+                        <input type="text" id="old-pass" name="old-pass" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="newPass" class="control-label">Nova lozinka:</label>
+                    <label for="new-pass" class="control-label">Nova lozinka:</label>
                     <div class="col-sm-9">
-                        <input type="text" id="newPass" name="newPass" class="form-control">
+                        <input type="text" id="new-pass" name="new-pass" class="form-control">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block" name="submit" value="izmena-lozinke">Sacuvaj</button>

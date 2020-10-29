@@ -20,19 +20,19 @@
             <div class="form-group">
                 <label for="userName" class="col-sm-3 control-label">Korisničko ime</label>
                 <div class="col-sm-9">
-                    <input type="text" id="userName" name="username" placeholder="Ime" class="form-control" autofocus>
+                    <input type="text" id="userName" name="username" placeholder="Ime" class="form-control">
                 </div>
             </div>
             <div class="form-group">
                 <label for="firstName" class="col-sm-3 control-label">Ime</label>
                 <div class="col-sm-9">
-                    <input type="text" id="firstName" name="ime" placeholder="Ime" class="form-control" autofocus>
+                    <input type="text" id="firstName" name="ime" placeholder="Ime" class="form-control">
                 </div>
             </div>
             <div class="form-group">
                 <label for="lastName" class="col-sm-3 control-label">Prezime</label>
                 <div class="col-sm-9">
-                    <input type="text" id="lastName" name="prezime" placeholder="Prezime" class="form-control" autofocus>
+                    <input type="text" id="lastName" name="prezime" placeholder="Prezime" class="form-control">
                 </div>
             </div>
             <div class="form-group">
@@ -56,11 +56,11 @@
             <div class="form-group">
                 <label for="phoneNumber" class="col-sm-3 control-label">Broj telefona</label>
                 <div class="col-sm-9">
-                    <input type="phoneNumber" id="phoneNumber" name="brtel" placeholder="Broj telefona" class="form-control">
+                    <input type="text" id="phoneNumber" name="brtel" placeholder="Broj telefona" class="form-control">
                 </div>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Registruj se</button>
-        </form> <!-- /form -->
+        </form>
 
     </div>
   </div>

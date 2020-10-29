@@ -22,7 +22,7 @@ public class dodajProjekciju extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin"))
         {
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
@@ -43,6 +43,7 @@ public class dodajProjekciju extends HttpServlet {
                     req.setAttribute("multiplexi", multiplexi);
                     req.setAttribute("sale", sale);
                     req.setAttribute("sedista", sedista);
+
                     req.getRequestDispatcher("/WEB-INF/jsp/admin/projekcije/dodaj_projekciju_forma.jsp").forward(req,resp);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
@@ -53,6 +54,7 @@ public class dodajProjekciju extends HttpServlet {
                     ArrayList<Film> movies = FilmDAO.findAll();
                     movies.sort(Comparator.comparing(Film::getNaziv));
                     req.setAttribute("filmovi", movies);
+
                     req.getRequestDispatcher("/WEB-INF/jsp/admin/projekcije/dodaj_projekciju.jsp").forward(req,resp);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
@@ -67,7 +69,7 @@ public class dodajProjekciju extends HttpServlet {
 
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin"))
         {
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
@@ -100,12 +102,12 @@ public class dodajProjekciju extends HttpServlet {
                     KartaDAO.insert(proj, entry.getKey(), entry.getValue());
                 }
 
-                req.setAttribute("state", "USPESNO UBACENA PROJEKCIJA");
-                req.getRequestDispatcher("/WEB-INF/jsp/projekcije/dodaj_projekciju.jsp").forward(req, resp);
+                req.getSession().setAttribute("state", "USPESNO UBACENA PROJEKCIJA");
+                resp.sendRedirect("/admin/projekcije/dodaj_projekciju");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-                req.setAttribute("state", "GRESKA PRILIKOM UBACIVANJA PROJEKCIJE: " + throwables.getMessage() + throwables.getLocalizedMessage());
-                req.getRequestDispatcher("/WEB-INF/jsp/projekcije/dodaj_projekciju.jsp").forward(req, resp);
+                req.getSession().setAttribute("state", "GRESKA PRILIKOM UBACIVANJA PROJEKCIJE: " + throwables.getMessage() + throwables.getLocalizedMessage());
+                resp.sendRedirect("/admin/projekcije/dodaj_projekciju");
             }
         }
     }

@@ -5,7 +5,7 @@
 
 <html>
 <head>
-  <title>Repertoar - Cinematic</title>
+  <title>Registruj radnika - Cinematic</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body class="bg-dark">
@@ -15,24 +15,24 @@
 <div class="container">
   <div class="row  bg-light p-3">
     <div class="col">
-      <form action="/admin/users/regemployee" method="post" class="form-horizontal" role="form">
+      <form action="/admin/korisnici/registruj_radnika" method="post" class="form-horizontal" role="form">
         <h2>Registracija</h2>
         <div class="form-group">
           <label for="userName" class="col-sm-3 control-label">Korisničko ime</label>
           <div class="col-sm-9">
-            <input type="text" id="userName" name="username" placeholder="Ime" class="form-control" autofocus>
+            <input type="text" id="userName" name="username" placeholder="Korisnicko ime" class="form-control">
           </div>
         </div>
         <div class="form-group">
           <label for="firstName" class="col-sm-3 control-label">Ime</label>
           <div class="col-sm-9">
-            <input type="text" id="firstName" name="ime" placeholder="Ime" class="form-control" autofocus>
+            <input type="text" id="firstName" name="ime" placeholder="Ime" class="form-control">
           </div>
         </div>
         <div class="form-group">
           <label for="lastName" class="col-sm-3 control-label">Prezime</label>
           <div class="col-sm-9">
-            <input type="text" id="lastName" name="prezime" placeholder="Prezime" class="form-control" autofocus>
+            <input type="text" id="lastName" name="prezime" placeholder="Prezime" class="form-control">
           </div>
         </div>
         <div class="form-group">
@@ -41,12 +41,6 @@
             <input type="email" id="email" placeholder="Email" class="form-control" name= "email">
           </div>
         </div>
-<%--        <div class="form-group">--%>
-<%--          <label for="password" class="col-sm-3 control-label">Lozinka</label>--%>
-<%--          <div class="col-sm-9">--%>
-<%--            <input type="password" id="password" name="password" placeholder="Lozinka" class="form-control">--%>
-<%--          </div>--%>
-<%--        </div>--%>
         <div class="form-group">
           <label for="birthDate" class="col-sm-3 control-label">Datum rođenja</label>
           <div class="col-sm-9">
@@ -60,7 +54,7 @@
           </div>
         </div>
         <button type="submit" class="btn btn-primary btn-block">Registruj radnika</button>
-      </form> <!-- /form -->
+      </form>
 
     </div>
   </div>

@@ -19,10 +19,11 @@ public class dodajFilm extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin"))
         {
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
+
             req.getRequestDispatcher("/WEB-INF/jsp/admin/filmovi/dodaj_film.jsp").forward(req,resp);
         }
     }
@@ -33,7 +34,7 @@ public class dodajFilm extends HttpServlet {
 
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin"))
         {
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
@@ -51,12 +52,15 @@ public class dodajFilm extends HttpServlet {
 
             try {
                 FilmDAO.insert(film);
-                req.setAttribute("state", "USPESNO UBACEN FILM");
-                req.getRequestDispatcher("/WEB-INF/jsp/admin/admin.jsp").forward(req, resp);
+                req.getSession().setAttribute("state", "USPESNO UBACEN FILM");
+                resp.sendRedirect("/admin");
+                //req.getRequestDispatcher("/WEB-INF/jsp/admin/admin.jsp").forward(req, resp);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-                req.setAttribute("state", "GRESKA PRILIKOM UBACIVANJA FILMA: " + throwables.getMessage() + throwables.getLocalizedMessage());
-                req.getRequestDispatcher("/WEB-INF/jsp/admin/filmovi/dodaj_film.jsp").forward(req,resp);
+                req.getSession().setAttribute("state", "GRESKA PRILIKOM UBACIVANJA FILMA: " + throwables.getMessage() + throwables.getLocalizedMessage());
+                resp.sendRedirect("/admin/filmovi/dodaj_film");
+
+                //req.getRequestDispatcher("/WEB-INF/jsp/admin/filmovi/dodaj_film.jsp").forward(req,resp);
             }
         }
     }

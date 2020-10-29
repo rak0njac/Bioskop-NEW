@@ -1,4 +1,4 @@
-package com.bioskop.servlet.korisnik.projekcija;
+package com.bioskop.servlet;
 
 import com.bioskop.dao.ProjekcijaDAO;
 import com.bioskop.model.Projekcija;
@@ -20,7 +20,7 @@ public class listaProjekcija extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String datum = req.getParameter("datum");
-        int idMultiplex = Integer.parseInt( req.getParameter("mplex") ); //TODO: Promeniti u id-multiplex
+        int idMultiplex = Integer.parseInt( req.getParameter("id-multiplex") ); //TODO: Promeniti u id-multiplex
         ArrayList<Projekcija> projekcije;
 
         try {
@@ -29,7 +29,7 @@ public class listaProjekcija extends HttpServlet {
             req.setAttribute("projekcije", projekcije);
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
-            req.setAttribute("state", "GRESKA PRILIKOM POTRAZIVANJA PROJEKCIJA");
+            req.getSession().setAttribute("state", "GRESKA PRILIKOM POTRAZIVANJA PROJEKCIJA");
             req.getRequestDispatcher("/WEB-INF/jsp/lista_projekcija.jsp").forward(req,resp);
         }
 

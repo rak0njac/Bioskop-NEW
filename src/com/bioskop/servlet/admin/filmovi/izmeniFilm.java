@@ -21,7 +21,7 @@ public class izmeniFilm extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin"))
         {
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
@@ -34,8 +34,8 @@ public class izmeniFilm extends HttpServlet {
                     req.getRequestDispatcher("/WEB-INF/jsp/admin/filmovi/izmeni_film_forma.jsp").forward(req,resp);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
-                    req.setAttribute("state", "GRESKA PRILIKOM UBACIVANJA FILMA: " + throwables.getMessage() + throwables.getLocalizedMessage());
-                    req.getRequestDispatcher("/WEB-INF/jsp/admin/movies/izmeni_film.jsp").forward(req,resp);
+                    req.getSession().setAttribute("state", "GRESKA PRILIKOM UBACIVANJA FILMA: " + throwables.getMessage() + throwables.getLocalizedMessage());
+                    req.getRequestDispatcher("/WEB-INF/jsp/admin/filmovi/izmeni_film.jsp").forward(req,resp);
                 }
             }
             else{
@@ -43,11 +43,12 @@ public class izmeniFilm extends HttpServlet {
                     ArrayList<Film> filmovi = FilmDAO.findAll();
                     filmovi.sort(Comparator.comparing(Film::getNaziv));
                     req.setAttribute("filmovi", filmovi);
-                    req.getRequestDispatcher("/WEB-INF/jsp/admin/movies/izmeni_film.jsp").forward(req,resp);
+
+                    req.getRequestDispatcher("/WEB-INF/jsp/admin/filmovi/izmeni_film.jsp").forward(req,resp);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
-                    req.setAttribute("state", "GRESKA PRILIKOM UBACIVANJA FILMA: " + throwables.getMessage() + throwables.getLocalizedMessage());
-                    req.getRequestDispatcher("/WEB-INF/jsp/admin/movies/izmeni_film.jsp").forward(req,resp);
+                    req.getSession().setAttribute("state", "GRESKA PRILIKOM UBACIVANJA FILMA: " + throwables.getMessage() + throwables.getLocalizedMessage());
+                    req.getRequestDispatcher("/WEB-INF/jsp/admin/filmovi/izmeni_film.jsp").forward(req,resp);
                 }
             }
         }
@@ -59,7 +60,7 @@ public class izmeniFilm extends HttpServlet {
 
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin"))
         {
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else {
@@ -82,12 +83,12 @@ public class izmeniFilm extends HttpServlet {
 
             try {
                 FilmDAO.update(film);
-                req.setAttribute("state", "USPESNO IZMENJEN FILM");
-                req.getRequestDispatcher("/WEB-INF/jsp/admin/movies/izmeni_film.jsp").forward(req,resp);
+                req.getSession().setAttribute("state", "USPESNO IZMENJEN FILM");
+                resp.sendRedirect("/admin/filmovi/izmeni_film");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-                req.setAttribute("state", "GRESKA PRILIKOM UBACIVANJA FILMA: " + throwables.getMessage() + throwables.getLocalizedMessage());
-                req.getRequestDispatcher("/WEB-INF/jsp/admin/movies/izmeni_film.jsp").forward(req,resp);
+                req.getSession().setAttribute("state", "GRESKA PRILIKOM UBACIVANJA FILMA: " + throwables.getMessage() + throwables.getLocalizedMessage());
+                resp.sendRedirect("/admin/filmovi/izmeni_film");
             }
 
         }

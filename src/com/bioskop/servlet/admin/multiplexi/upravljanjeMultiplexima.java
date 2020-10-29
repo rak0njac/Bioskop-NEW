@@ -18,7 +18,7 @@ public class upravljanjeMultiplexima extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin")){
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else {
@@ -26,10 +26,12 @@ public class upravljanjeMultiplexima extends HttpServlet {
                 ArrayList<Multiplex> multiplexi = MultiplexDAO.findAll();
                 multiplexi.sort(Comparator.comparing(Multiplex::getNaziv));
                 req.setAttribute("multiplexi", multiplexi);
+
+
                 req.getRequestDispatcher("/WEB-INF/jsp/admin/multiplexi/upravljanje_multiplexima.jsp").forward(req, resp);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-                req.setAttribute("state", "GRESKA PRILIKOM UPRAVLJANJA MULTIPLEX PODACIMA");
+                req.getSession().setAttribute("state", "GRESKA PRILIKOM UPRAVLJANJA MULTIPLEX PODACIMA");
                 req.getRequestDispatcher("/WEB-INF/jsp/admin/multiplexi/upravljanje_multiplexima.jsp").forward(req, resp);
             }
         }
@@ -38,7 +40,7 @@ public class upravljanjeMultiplexima extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin")){
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
@@ -46,8 +48,8 @@ public class upravljanjeMultiplexima extends HttpServlet {
             try {
                 if (action.equals("delete")) {
                     MultiplexDAO.delete(MultiplexDAO.findById(Integer.parseInt(req.getParameter("id"))));
-                    req.setAttribute("state", "USPESNO IZBRISAN MULTIPLEX");
-                    req.getRequestDispatcher("/WEB-INF/jsp/admin/multiplexi/upravljanje_multiplexima.jsp").forward(req, resp);
+                    req.getSession().setAttribute("state", "USPESNO IZBRISAN MULTIPLEX");
+                    resp.sendRedirect("/admin/multiplexi/upravljanje_multiplexima");
                 }
                 else if (action.equals("add")) {
                     Map<String, String[]> parameterMap = req.getParameterMap();
@@ -62,13 +64,13 @@ public class upravljanjeMultiplexima extends HttpServlet {
                     }
                     MultiplexDAO.insert(req.getParameter("naziv"), myMap);
 
-                    req.setAttribute("state", "USPESNO DODAT MULTIPLEX");
-                    req.getRequestDispatcher("/WEB-INF/jsp/admin/multiplexi/upravljanje_multiplexima.jsp").forward(req, resp);
+                    req.getSession().setAttribute("state", "USPESNO DODAT MULTIPLEX");
+                    resp.sendRedirect("/admin/multiplexi/upravljanje_multiplexima");
                 }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-                req.setAttribute("state", "GRESKA PRILIKOM UPRAVLJANJA MULTIPLEX PODACIMA");
-                req.getRequestDispatcher("/WEB-INF/jsp/admin/multiplexi/upravljanje_multiplexima.jsp").forward(req, resp);
+                req.getSession().setAttribute("state", "GRESKA PRILIKOM UPRAVLJANJA MULTIPLEX PODACIMA");
+                resp.sendRedirect("/admin/multiplexi/upravljanje_multiplexima");
             }
         }
     }

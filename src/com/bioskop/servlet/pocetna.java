@@ -1,3 +1,5 @@
+//TODO: BOOTSTRAP GROWL, JS VALIDACIJA
+
 package com.bioskop.servlet;
 
 import com.bioskop.dao.MultiplexDAO;
@@ -54,7 +56,7 @@ public class pocetna extends HttpServlet {
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            req.setAttribute("state", "FATALNA GRESKA");
+            req.getSession().setAttribute("state", "FATALNA GRESKA");
             req.getRequestDispatcher("/WEB-INF/jsp/index.jsp").forward(req,resp);
         }
 

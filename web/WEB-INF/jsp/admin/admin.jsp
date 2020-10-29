@@ -5,7 +5,7 @@
 
 <html>
 <head>
-  <title>Repertoar - Cinematic</title>
+  <title>Admin panel - Cinematic</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body class="bg-dark">
@@ -20,17 +20,17 @@
         Mole se administratori da budu izuzetno pazljivi prilikom koriscenja administratorskih opcija. Pre izvrsavanja bilo koje radnje, dvaput proverite da li ste sigurni da istu uopste zelite da izvrsite, kao i da li su svi uneti podaci tacni. Svaka zloupotreba podleze krivicnoj odgovornosti.
       </div>
         <h2>Korisnici</h2>
-      <a href="/admin/users/ban" class="btn btn-primary">Zabrani pristup korisniku</a>
-      <a href="/admin/users/regadmin" class="btn btn-primary">Registruj novog admina</a>
-      <a href="/admin/users/regemployee" class="btn btn-primary">Registruj novog radnika</a>
-      <a href="/admin/users/clubenroll" class="btn btn-primary">Uclani korisnika u klub</a>
+      <a href="/admin/korisnici/zabrani_pristup" class="btn btn-primary">Zabrani pristup korisniku</a>
+      <a href="/admin/korisnici/registruj_admina" class="btn btn-primary">Registruj novog admina</a>
+      <a href="/admin/korisnici/registruj_radnika" class="btn btn-primary">Registruj novog radnika</a>
+      <a href="/admin/korisnici/uclani_u_klub" class="btn btn-primary">Uclani korisnika u klub</a>
       <h2>Filmovi</h2>
-      <a href="/admin/movies/addmovie" class="btn btn-primary">Dodaj novi film</a>
-      <a href="/admin/movies/editmovie" class="btn btn-primary">Izmeni film</a>
+      <a href="/admin/filmovi/dodaj_film" class="btn btn-primary">Dodaj novi film</a>
+      <a href="/admin/filmovi/izmeni_film" class="btn btn-primary">Izmeni film</a>
       <h2>Projekcije</h2>
-      <a href="/admin/projections/addprojection" class="btn btn-primary">Dodaj novu projekciju</a>
+      <a href="/admin/projekcije/dodaj_projekciju" class="btn btn-primary">Dodaj novu projekciju</a>
       <h2>Multiplexi</h2>
-      <a href="/admin/mplex/managemplex" class="btn btn-primary">Upravljanje multiplexima</a>
+      <a href="/admin/multiplexi/upravljanje_multiplexima" class="btn btn-primary">Upravljanje multiplexima</a>
     </div>
   </div>
 </div>

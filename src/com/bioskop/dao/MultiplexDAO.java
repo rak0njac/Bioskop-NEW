@@ -42,7 +42,8 @@ public class MultiplexDAO {
     }
 
     public static Multiplex findById(int id) throws SQLException {
-        ps = con.prepareStatement("select * from MULTIPLEX where idMultiplex = " + id);
+        ps = con.prepareStatement("select * from MULTIPLEX where idMultiplex = ?");
+        ps.setInt(1, id);
         rs = ps.executeQuery();
         rs.next();
         Multiplex mplex = new Multiplex();
@@ -54,7 +55,8 @@ public class MultiplexDAO {
     }
 
     public static Multiplex findByNaziv(String naziv) throws SQLException {
-        ps = con.prepareStatement("select * from MULTIPLEX where naziv = '" + naziv + "'");
+        ps = con.prepareStatement("select * from MULTIPLEX where naziv = ?");
+        ps.setString(1, naziv);
         rs = ps.executeQuery();
         rs.next();
         Multiplex mplex = new Multiplex();
@@ -78,15 +80,15 @@ public class MultiplexDAO {
 
     }
 
-    public static void insert(String naziv, Map<Integer, String[]> myMap) throws SQLException {
+    public static void insert(String naziv, Map<Integer, String[]> myMap) throws SQLException { //TODO: pozivati insert iz Proj_SalaDAO i SedisteDAO umesto ovde ih insertovati implicitno
         ps = con.prepareStatement("insert into multiplex(naziv) values (?)", ps.RETURN_GENERATED_KEYS);
         ps.setString(1, naziv);
         ps.executeUpdate();
         int idMultiplex = 0;
 
-        try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-            generatedKeys.next();
-            idMultiplex = generatedKeys.getInt(1);
+        try (ResultSet rs = ps.getGeneratedKeys()) {
+            rs.next();
+            idMultiplex = rs.getInt(1);
         }
 
         for (Map.Entry<Integer, String[]> entry : myMap.entrySet()) {

@@ -18,10 +18,11 @@ public class registrujRadnika extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin")){
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else {
+
             req.getRequestDispatcher("/WEB-INF/jsp/admin/korisnici/registruj_radnika.jsp").forward(req,resp);
         }
     }
@@ -31,10 +32,11 @@ public class registrujRadnika extends HttpServlet
         //TODO: Validacija u JSP
 
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin")){
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else {
+            try {
             Korisnik k = new Korisnik();
 
             k.setUsername(req.getParameter("username"));
@@ -48,14 +50,14 @@ public class registrujRadnika extends HttpServlet
             k.setBrPoena(0);
 
 
-            try {
+
                 k.setIdKorisnik(KorisnikDAO.insert(k));
                 req.getSession().setAttribute("user", k);
-                req.setAttribute("state", "USPESNO REGISTROVAN RADNIK");
-                req.getRequestDispatcher("/WEB-INF/jsp/radnik/radnik.jsp").forward(req, resp);
-            } catch (SQLException throwables) {
+                req.getSession().setAttribute("state", "USPESNO REGISTROVAN RADNIK");
+                resp.sendRedirect("/radnik");
+            } catch (Exception throwables) {
                 throwables.printStackTrace();
-                req.setAttribute("state", "GRESKA PRILIKOM REGISTROVANJA RADNIKA");
+                req.getSession().setAttribute("state", "GRESKA PRILIKOM REGISTROVANJA RADNIKA");
                 req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
             }
         }

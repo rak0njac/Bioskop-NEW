@@ -18,7 +18,7 @@ public class otkaziSveRezervacije extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Radnik")){
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
@@ -30,12 +30,12 @@ public class otkaziSveRezervacije extends HttpServlet {
                 {
                     KartaDAO.cancelReservation(k.getIdKarta());
                 }
-                req.setAttribute("state", "SVE REZERVACIJE SU USPESNO OTKAZANE");
-                req.getRequestDispatcher("/WEB-INF/jsp/radnik/radnik.jsp").forward(req, resp);
+                req.getSession().setAttribute("state", "SVE REZERVACIJE SU USPESNO OTKAZANE");
+                resp.sendRedirect("/radnik");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-                req.setAttribute("state", "GRESKA PRILIKOM OTKAZIVANJA REZERVACIJA");
-                req.getRequestDispatcher("/WEB-INF/jsp/radnik/radnik.jsp").forward(req, resp);
+                req.getSession().setAttribute("state", "GRESKA PRILIKOM OTKAZIVANJA REZERVACIJA");
+                resp.sendRedirect("/radnik");
             }
         }
     }

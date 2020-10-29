@@ -3,7 +3,7 @@
 
 <html>
 <head>
-    <title>Repertoar - Cinematic</title>
+    <title>Radnik panel - Cinematic</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body class="bg-dark">
@@ -33,7 +33,6 @@
                             <tbody>
                                 <c:forEach items="${p.karte}" var="k">
                                     <c:if test="${k.korisnik != null && k.status.equals('Raspolozivo')}">
-
                                         <tr>
                                             <td>${k.korisnik.username}</td>
                                             <td>${k.sediste.tip}</td>
@@ -83,63 +82,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-<script>
-    $(document).ready(function(){
-
-        $(".tabela-raspolozivih").each(function () {
-            var map = new Map()
-            $(this).find(".tip-sedista").each(function () {
-                var tip = $(this).text()
-                if(map.get(tip) > 0)
-                    map.set(tip, map.get(tip) + 1)
-                else map.set(tip, 1)
-            })
-            var seen = {}
-            $(this).find(".red").each(function () {
-                var red = $(this)
-                map.forEach(function (value, key, map) {
-                    var tip = $(red).find(".tip-sedista").text()
-                    console.log(tip)
-                    if(key === tip){
-                        $(red).find(".broj-slobodnih").text(value)
-                    }
-                })
-                var txt = $(red).text();
-                if (seen[txt])
-                    $(red).remove();
-                else
-                    seen[txt] = true;
-            })
-            $(this).show()
-        })
-        // var seen = {};
-        // $('table tr').each(function() {
-        //     var txt = $(this).text();
-        //     if (seen[txt])
-        //         $(this).remove();
-        //     else
-        //         seen[txt] = true;
-        // });
-    })
-
-    $(".btn-potvrdi").click(function () {
-        $("#frm-rezervacija").attr("action", "/radnik/potvrdiRezervaciju")
-        $("#frm-rezervacija > input").attr("value", $(this).attr("data-id"))
-        $("#frm-rezervacija").submit()
-    })
-
-    $(".btn-otkazi").click(function () {
-        $("#frm-rezervacija").attr("action", "/radnik/otkaziRezervaciju")
-        $("#frm-rezervacija > input").attr("value", $(this).attr("data-id"))
-        $("#frm-rezervacija").submit()
-    })
-
-    $(".btn-obrisi-sve").click(function () {
-        $("#frm-rezervacija").attr("action", "/radnik/otkaziSveRezervacije")
-        $("#frm-rezervacija > input").attr("value", $(this).attr("data-id"))
-        $("#frm-rezervacija").submit()
-    })
-</script>
+<script src="/js/radnik.js"></script>
 <script src="/js/login.js"></script>
 
 </body>

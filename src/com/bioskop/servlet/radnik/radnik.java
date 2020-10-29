@@ -19,7 +19,7 @@ public class radnik extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Radnik")) {
-            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getSession().setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
@@ -28,7 +28,7 @@ public class radnik extends HttpServlet {
                 req.setAttribute("projekcije", projekcije);
 
             } catch (SQLException throwables) {
-                req.setAttribute("state", "GRESKA PRILIKOM POTRAZIVANJA PROJEKCIJA");
+                req.getSession().setAttribute("state", "GRESKA PRILIKOM POTRAZIVANJA PROJEKCIJA");
                 throwables.printStackTrace();
             }
 

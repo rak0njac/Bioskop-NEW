@@ -51,7 +51,8 @@ public class ProjekcijaDAO {
     }
 
     public static Projekcija findById(int id) throws SQLException {
-        ps = con.prepareStatement("select * from PROJEKCIJA where idProjekcija = " + id);
+        ps = con.prepareStatement("select * from PROJEKCIJA where idProjekcija = ?");
+        ps.setInt(1, id);
         rs = ps.executeQuery();
         rs.next();
         Projekcija proj = new Projekcija();
@@ -66,90 +67,6 @@ public class ProjekcijaDAO {
         return proj;
     }
 
-    public static ArrayList<String> getDateList(ArrayList<Projekcija> list){
-        ArrayList<String> datumi = new ArrayList<>();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy.");
-
-        for(Projekcija p : list){
-            Boolean skip = false;
-            String datum = formatter.format(p.getVremePocetka());
-            for(String d : datumi){
-                if(d.equals(datum))
-                {
-                    skip = true;
-                    break;
-                }
-            }
-            if(!skip)
-            {
-                datumi.add(datum);
-            }
-        }
-        return datumi;
-    }
-
-    public static ArrayList<Projekcija> findByFilmId(int id) throws SQLException {
-        projList.clear();
-        ps = con.prepareStatement("select * from Projekcija where idFilm=" + id);
-        rs = ps.executeQuery();
-
-        while(rs.next()){
-            Projekcija proj = new Projekcija();
-
-            proj.setIdProjekcija(rs.getInt("idProjekcija"));
-            proj.setFilm(FilmDAO.findById(rs.getInt("idFilm")));
-            proj.setPremijera(rs.getBoolean("premijera"));
-            proj.setVremePocetka(new DateHelper(rs.getTimestamp("vremepocetka").toLocalDateTime()));
-            proj.setZavrseno(rs.getBoolean("zavrseno"));
-            proj.setSala(Proj_SalaDAO.findById(rs.getInt("idSala")));
-            projList.add(proj);
-        }
-        return projList;
-    }
-
-    public static ArrayList<String> getDateList(Film film) throws SQLException, ParseException {
-        ps = con.prepareStatement("select VremePocetka from Projekcija where idFilm=" + film.getIdFilm());
-        rs = ps.executeQuery();
-
-        ArrayList<Projekcija> projekcije = new ArrayList<>();
-
-        while(rs.next()){
-            Projekcija p = new Projekcija();
-            p.setVremePocetka(new DateHelper(rs.getTimestamp("vremepocetka").toLocalDateTime()));
-            projekcije.add(p);
-        }
-
-        return getDateList(projekcije);
-    }
-
-    public static ArrayList<String> getTimeAndPSListByDateAndFilm(String date, Film film) throws SQLException, ParseException {
-        java.util.Date d = new SimpleDateFormat("dd.MM.yyyy.").parse(date);
-        date = new SimpleDateFormat("MM/dd/yyyy").format(d);
-
-
-        ps = con.prepareStatement("select idsala, vremepocetka from PROJEKCIJA where zavrseno=0 and datediff(day, VremePocetka, '" + date + "') = 0 and idFilm =" + film.getIdFilm());
-        rs = ps.executeQuery();
-        ArrayList<Projekcija> projekcijas = new ArrayList<>();
-        ArrayList<String> vremenaAndSale = new ArrayList<>();
-
-        while(rs.next()){
-            Proj_Sala ps = Proj_SalaDAO.findById(rs.getInt("idsala"));
-            DateHelper vreme = new DateHelper(rs.getTimestamp("vremepocetka").toLocalDateTime());
-
-            Projekcija p = new Projekcija();
-            p.setSala(ps);
-            p.setVremePocetka(vreme);
-            projekcijas.add(p);
-        }
-
-        Collections.sort(projekcijas, Comparator.comparing(o -> o.getVremePocetka().getLocalDateTime()));
-
-        for(Projekcija p : projekcijas){
-            String st = new SimpleDateFormat("hh:mm").format(p.getVremePocetka()) + " - Sala " + p.getSala().getBroj();
-            vremenaAndSale.add(st);
-        }
-        return vremenaAndSale;
-    }
 
     public static ArrayList<Projekcija> findByDateAndMultiplex(String date, int idMplex) throws SQLException, ParseException {
         projList.clear();
@@ -200,13 +117,8 @@ public class ProjekcijaDAO {
         ps.setBoolean(4, proj.isPremijera());
         ps.executeUpdate();
 
-        try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-            if (generatedKeys.next()) {
-                return generatedKeys.getInt(1);
-            }
-            else {
-                throw new SQLException("Creating user failed, no ID obtained.");
-            }
-        }
+        rs = ps.getGeneratedKeys();
+        rs.next();
+        return rs.getInt(1);
     }
 }

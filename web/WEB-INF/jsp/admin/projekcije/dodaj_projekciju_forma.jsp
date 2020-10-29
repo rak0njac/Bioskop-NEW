@@ -5,7 +5,7 @@
 
 <html>
 <head>
-  <title>Repertoar - Cinematic</title>
+  <title>Nova projekcija - Cinematic</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body class="bg-dark">
@@ -15,13 +15,13 @@
 <div class="container">
   <div class="row  bg-light p-3">
     <div class="col">
-        <form action="/admin/projections/addprojection" method="post" class="form-horizontal" role="form">
+        <form action="/admin/projekcije/dodaj_projekciju" method="post" class="form-horizontal" role="form">
             <input type="hidden" name="id" value="${film.idFilm}">
             <h2>Nova projekcija - ${film.naziv}</h2>
             <div class="form-group">
-                <label for="mul" class="col-sm-3 control-label">Multiplex</label>
+                <label for="multiplex" class="col-sm-3 control-label">Multiplex</label>
                 <div class="col-sm-9">
-                    <select id="mul" name="mul" class="form-control">
+                    <select id="multiplex" name="multiplex" class="form-control">
                         <option value="">Izaberite...</option>
                         <c:forEach items="${requestScope.multiplexi}" var="m">
                             <option value="${m.idMultiplex}">${m.naziv}</option>
@@ -40,7 +40,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group" id="inputSediste">
+            <div class="form-group" id="input-sediste">
                 <c:forEach items="${requestScope.sedista}" var="s">
                     <div class="sediste">
                         Cena za ${s.tip} sediste: <input data-tip="${s.tip}" data-sala="${s.sala.idSala}" type="number"/><br>
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Gotovo</button>
-        </form> <!-- /form -->
+        </form>
 
     </div>
   </div>
@@ -78,68 +78,7 @@
 
 <script src="/js/login.js"></script>
 
-<script>
-    $(document).ready(function () {
-        var distinct = new Set()
-        $(".sediste").each(function () {
-            distinct.add($(this).html())
-        })
-        $("#inputSediste").empty()
-        distinct.forEach(function (value, value2, set) {
-            $("#inputSediste").append("<div class='sediste' style='display: none'>" + value + "</div>")
-        })
-    })
-
-    $("#mul").change(function(){
-        $("#mul").find("option[value='']").remove()
-        $("#sala").find("option[value='']").remove()
-
-        var idMul = $(this).val()
-
-        $("#sala > option").show()
-        $("#sala > option").each(function () {
-            if($(this).attr("data-mul") != idMul)
-                $(this).hide()
-        })
-
-        var idSala = $("#sala").find("option[data-mul=" + idMul + "]").val()
-
-        $("#sala").val(idSala)
-        $("#sala").attr("disabled", false)
-
-        updateSediste()
-    })
-
-    $("#sala").change( function () {
-        updateSediste()
-    })
-
-    function updateSediste()
-    {
-        $(".sediste").show()
-
-        //var distinct = new Set()
-
-        $(".sediste").each(function () {
-            $(this).find("input").attr("name", "")
-            var sed_sala = $(this).find("input").attr("data-sala")
-            var sala = $("#sala").val()
-            console.log(sed_sala)
-            console.log(sala)
-            if(sed_sala != sala)
-            {
-                $(this).hide()
-            }
-            else{
-                var tip = $(this).find("input").attr("data-tip")
-                $(this).find("input").attr("name", "cena" + tip)
-            }
-            // else distinct.add($(this).html())
-        })
-
-    }
-
-</script>
+<script src="/js/dodaj_projekciju_forma.js"></script>
 
 </body>
 </html>

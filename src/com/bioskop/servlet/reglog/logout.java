@@ -21,10 +21,11 @@ public class logout extends HttpServlet
             HttpSession ses = req.getSession();
             ses.removeAttribute("user");
             ses.invalidate();
+
             resp.sendRedirect("/index.html");
         }
         catch(Exception e){
-            req.setAttribute("state", "GRESKA");
+            req.getSession().setAttribute("state", "GRESKA");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req,resp);
         }
     }

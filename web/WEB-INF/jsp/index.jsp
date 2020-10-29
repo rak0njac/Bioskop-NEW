@@ -10,10 +10,10 @@
 </head>
 <body class="bg-dark">
 
-<form action="film" id="frmProj" method="get">
+<form action="film" id="frm-lista-projekcija" method="get">
   <input type="hidden" name="datum"/>
-  <input type="hidden" name="projId"/>
-    <input type="hidden" name="mplexId">
+  <input type="hidden" name="id-projekcija"/>
+    <input type="hidden" name="id-multiplex">
 </form>
 
 <jsp:include page="navbar.jsp"/>
@@ -23,9 +23,8 @@
       <form class="mb-5">
         <div class="row">
           <div class="col-3">
-              <label for="mul">Multiplex</label>
-              <select class="form-control mr-2" id="mul">
-<%--                <option value="ALL">Svi</option>--%>
+              <label for="multiplex">Multiplex</label>
+              <select class="form-control mr-2" id="multiplex">
                 <c:forEach items="${requestScope.multiplexi}" var="m">
                   <option value="${m.idMultiplex}">${m.naziv}</option>
                 </c:forEach>
@@ -34,7 +33,6 @@
           <div class="col-3">
             <label for="datum">Datum</label>
             <select class="form-control mr-2" id="datum">
-<%--              <option value="ALL">Svi</option>--%>
               <c:forEach items="${requestScope.datumi}" var="d">
                 <option value="${d.localDate}">${d.displayDate}</option>
               </c:forEach>
@@ -42,7 +40,7 @@
           </div>
         </div>
       </form>
-      <div id="movieList"></div>
+      <div id="lista-filmova"></div>
     </div>
   </div>
 </div>
@@ -63,18 +61,18 @@
   function loadMovies(){
       var datum = $("#datum").val()
       $('input[name ="datum"]').val(datum)
-      var mplex = $("#mul").val()
-      $.get( "/listaProjekcija", { datum: datum, mplex: mplex }, function( data ) {
-          $("#movieList").hide()
-          $( "#movieList" ).html( data )
-          $("#movieList").fadeIn("250")
+      var mplex = $("#multiplex").val()
+      $.get( "/lista_projekcija", { 'datum': datum, 'id-multiplex': mplex }, function( data ) {
+          $("#lista-filmova").hide()
+          $( "#lista-filmova" ).html( data )
+          $("#lista-filmova").fadeIn("250")
       }, "html");
   }
 
-  $("#movieList").on("click", ".btn-projekcija", function() {
-    $('input[name ="projId"]').val($(this).val())
-      $('input[name ="mplexId"]').val($("#mul").val())
-      $("#frmProj").submit();
+  $("#lista-filmova").on("click", ".btn-projekcija", function() {
+    $('input[name ="id-projekcija"]').val($(this).val())
+      $('input[name ="id-multiplex"]').val($("#multiplex").val())
+      $("#frm-lista-projekcija").submit();
   })
 </script>
 
