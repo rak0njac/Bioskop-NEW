@@ -1,5 +1,6 @@
 package com.bioskop.dao;
 
+import com.bioskop.helpers.DateHelper;
 import com.bioskop.model.*;
 
 import java.sql.*;
@@ -40,7 +41,7 @@ public class ProjekcijaDAO {
             proj.setIdProjekcija(rs.getInt("idProjekcija"));
             proj.setFilm(FilmDAO.findById(rs.getInt("idFilm")));
             proj.setPremijera(rs.getBoolean("premijera"));
-            proj.setVremePocetka(rs.getTimestamp("vremepocetka").toLocalDateTime());
+            proj.setVremePocetka(new DateHelper(rs.getTimestamp("vremepocetka").toLocalDateTime()));
             proj.setZavrseno(rs.getBoolean("zavrseno"));
             proj.setSala(Proj_SalaDAO.findById(rs.getInt("idSala")));
             proj.setKarte((ArrayList<Karta>) KartaDAO.findByIdProj(proj.getIdProjekcija()).clone());
@@ -58,7 +59,7 @@ public class ProjekcijaDAO {
         proj.setIdProjekcija(rs.getInt("idProjekcija"));
         proj.setFilm(FilmDAO.findById(rs.getInt("idFilm")));
         proj.setPremijera(rs.getBoolean("premijera"));
-        proj.setVremePocetka(rs.getTimestamp("vremepocetka").toLocalDateTime());
+        proj.setVremePocetka(new DateHelper(rs.getTimestamp("vremepocetka").toLocalDateTime()));
         proj.setZavrseno(rs.getBoolean("zavrseno"));
         proj.setSala(Proj_SalaDAO.findById(rs.getInt("idSala")));
 
@@ -98,7 +99,7 @@ public class ProjekcijaDAO {
             proj.setIdProjekcija(rs.getInt("idProjekcija"));
             proj.setFilm(FilmDAO.findById(rs.getInt("idFilm")));
             proj.setPremijera(rs.getBoolean("premijera"));
-            proj.setVremePocetka(rs.getTimestamp("vremepocetka").toLocalDateTime());
+            proj.setVremePocetka(new DateHelper(rs.getTimestamp("vremepocetka").toLocalDateTime()));
             proj.setZavrseno(rs.getBoolean("zavrseno"));
             proj.setSala(Proj_SalaDAO.findById(rs.getInt("idSala")));
             projList.add(proj);
@@ -114,7 +115,7 @@ public class ProjekcijaDAO {
 
         while(rs.next()){
             Projekcija p = new Projekcija();
-            p.setVremePocetka(rs.getTimestamp("vremepocetka").toLocalDateTime());
+            p.setVremePocetka(new DateHelper(rs.getTimestamp("vremepocetka").toLocalDateTime()));
             projekcije.add(p);
         }
 
@@ -133,7 +134,7 @@ public class ProjekcijaDAO {
 
         while(rs.next()){
             Proj_Sala ps = Proj_SalaDAO.findById(rs.getInt("idsala"));
-            LocalDateTime vreme = rs.getTimestamp("vremepocetka").toLocalDateTime();
+            DateHelper vreme = new DateHelper(rs.getTimestamp("vremepocetka").toLocalDateTime());
 
             Projekcija p = new Projekcija();
             p.setSala(ps);
@@ -141,11 +142,7 @@ public class ProjekcijaDAO {
             projekcijas.add(p);
         }
 
-        Collections.sort(projekcijas, new Comparator<Projekcija>() {
-            public int compare(Projekcija o1, Projekcija o2) {
-                return o1.getVremePocetka().compareTo(o2.getVremePocetka());
-            }
-        });
+        Collections.sort(projekcijas, Comparator.comparing(o -> o.getVremePocetka().getLocalDateTime()));
 
         for(Projekcija p : projekcijas){
             String st = new SimpleDateFormat("hh:mm").format(p.getVremePocetka()) + " - Sala " + p.getSala().getBroj();
@@ -174,7 +171,7 @@ public class ProjekcijaDAO {
             Boolean ok = true;
             for(Projekcija p : projList)
             {
-                if(p.getFilm().getIdFilm() == film.getIdFilm()) {
+                if(p.getFilm().getIdFilm() == film.getIdFilm() && !(p.isPremijera())) {
                     ok = false;
                     break;
                 }
@@ -186,7 +183,7 @@ public class ProjekcijaDAO {
                 proj.setIdProjekcija(rs.getInt("idProjekcija"));
                 proj.setFilm(film);
                 proj.setPremijera(rs.getBoolean("premijera"));
-                proj.setVremePocetka(rs.getTimestamp("vremepocetka").toLocalDateTime());
+                proj.setVremePocetka(new DateHelper(rs.getTimestamp("vremepocetka").toLocalDateTime()));
                 proj.setZavrseno(rs.getBoolean("zavrseno"));
                 proj.setSala(Proj_SalaDAO.findById(rs.getInt("idSala")));
                 projList.add(proj);
@@ -199,7 +196,7 @@ public class ProjekcijaDAO {
         ps = con.prepareStatement("insert into projekcija (idfilm, idsala, vremepocetka, premijera) values (?,?,?,?)", ps.RETURN_GENERATED_KEYS);
         ps.setInt(1, proj.getFilm().getIdFilm());
         ps.setInt(2, proj.getSala().getIdSala());
-        ps.setTimestamp(3, Timestamp.valueOf(proj.getVremePocetka()));
+        ps.setTimestamp(3, Timestamp.valueOf(proj.getVremePocetka().getLocalDateTime()));
         ps.setBoolean(4, proj.isPremijera());
         ps.executeUpdate();
 

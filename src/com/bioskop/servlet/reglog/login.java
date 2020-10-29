@@ -23,6 +23,9 @@ public class login extends HttpServlet
         try {
             Korisnik k = KorisnikDAO.findByUserAndPass(user, pass);
 
+            //TODO: Odraditi preko ajaxa!!!
+            //TODO: Zabeleziti poslednju stranicu pre logovanja i tamo redirectovati!
+
             if(k == null)
             {
                 req.setAttribute("state", "NETACNI PODACI");
@@ -40,18 +43,22 @@ public class login extends HttpServlet
             else if(k.getTip().equals("Admin"))
             {
                 req.getSession().setAttribute("user", k);
-                req.getSession().setAttribute("admin", k);
                 resp.sendRedirect("/admin");
             }
             else if(k.getTip().equals("Radnik"))
             {
                 req.getSession().setAttribute("user", k);
-                req.getSession().setAttribute("radnik", k);
                 resp.sendRedirect("/radnik");
+            }
+            else{
+                req.setAttribute("state", "GRESKA");
+                req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req,resp);
             }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            req.setAttribute("state", "GRESKA");
+            req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req,resp);
         }
     }
 }

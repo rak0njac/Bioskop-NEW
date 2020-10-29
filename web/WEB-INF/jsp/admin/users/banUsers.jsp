@@ -20,7 +20,7 @@
         Mole se administratori da budu izuzetno pazljivi prilikom koriscenja administratorskih opcija. Pre izvrsavanja bilo koje radnje, dvaput proverite da li ste sigurni da istu uopste zelite da izvrsite, kao i da li su svi uneti podaci tacni. Svaka zloupotreba podleze krivicnoj odgovornosti.
       </div>
         <h3>Unesite username korisnika kojem se zabranjuje pristup:</h3>
-      <form action="/admin/ban" method="post">
+      <form action="/admin/users/ban" method="post">
         <input type="text" name="username">
         <input type="submit" value="OK">
       </form>

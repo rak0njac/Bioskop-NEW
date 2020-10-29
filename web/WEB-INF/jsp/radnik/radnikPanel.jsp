@@ -16,8 +16,8 @@
     <div class="row  bg-light p-3">
         <div class="col">
             <c:forEach items="${requestScope.projekcije}" var='p'>
-                <h1>${p.film.naziv} - ${p.vremePocetka.toLocalDate()} ${p.vremePocetka.toLocalTime()}</h1>
-                <div class="row">
+                <h1>${p.film.naziv} - ${p.vremePocetka.displayDate} ${p.vremePocetka.displayTime}</h1>
+                <div class="row projekcija">
                     <div class="col">
                         <h3>Rezervisano</h3>
                         <table class="table">
@@ -38,8 +38,8 @@
                                             <td>${k.korisnik.username}</td>
                                             <td>${k.sediste.tip}</td>
                                             <td>${k.cena}</td>
-                                            <td><button data-id="${k.idKarta}" class="btn btn-primary btn-potvrdi">Potvrdi</button></td>
-                                            <td><button data-id="${k.idKarta}" class="btn btn-danger btn-otkazi">Otkazi</button></td>
+                                            <td><button data-id="${k.idKarta}" class="btn btn-primary btn-sm btn-potvrdi">Potvrdi</button></td>
+                                            <td><button data-id="${k.idKarta}" class="btn btn-danger btn-sm btn-otkazi">Otkazi</button></td>
                                         </tr>
                                     </c:if>
                                 </c:forEach>
@@ -49,10 +49,11 @@
                     </div>
                     <div class="col">
                         <h3>Raspolozivo</h3>
-                        <table class="table">
+                        <table class="table tabela-raspolozivih" style="display: none">
                             <thead>
                             <tr>
                                 <th>Tip</th>
+                                <th>Slobodnih</th>
                                 <th>Cena</th>
                                 <th>Stampaj</th>
                             </tr>
@@ -60,10 +61,11 @@
                             <tbody>
                             <c:forEach items="${p.karte}" var="k">
                                 <c:if test="${k.korisnik == null}">
-                                    <tr>
-                                        <td>${k.sediste.tip}</td>
-                                        <td>${k.cena}</td>
-                                        <td><button class="btn btn-primary">Stampaj</button></td>
+                                    <tr class="red">
+                                        <td class="tip-sedista">${k.sediste.tip}</td>
+                                        <td class="broj-slobodnih"></td>
+                                        <td class="cena">${k.cena}</td>
+                                        <td><button class="btn btn-sm btn-primary">Stampaj</button></td>
                                     </tr>
                                 </c:if>
                             </c:forEach>
@@ -82,6 +84,44 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <script>
+    $(document).ready(function(){
+
+        $(".tabela-raspolozivih").each(function () {
+            var map = new Map()
+            $(this).find(".tip-sedista").each(function () {
+                var tip = $(this).text()
+                if(map.get(tip) > 0)
+                    map.set(tip, map.get(tip) + 1)
+                else map.set(tip, 1)
+            })
+            var seen = {}
+            $(this).find(".red").each(function () {
+                var red = $(this)
+                map.forEach(function (value, key, map) {
+                    var tip = $(red).find(".tip-sedista").text()
+                    console.log(tip)
+                    if(key === tip){
+                        $(red).find(".broj-slobodnih").text(value)
+                    }
+                })
+                var txt = $(red).text();
+                if (seen[txt])
+                    $(red).remove();
+                else
+                    seen[txt] = true;
+            })
+            $(this).show()
+        })
+        // var seen = {};
+        // $('table tr').each(function() {
+        //     var txt = $(this).text();
+        //     if (seen[txt])
+        //         $(this).remove();
+        //     else
+        //         seen[txt] = true;
+        // });
+    })
+
     $(".btn-potvrdi").click(function () {
         $("#frm-rezervacija").attr("action", "/radnik/potvrdiRezervaciju")
         $("#frm-rezervacija > input").attr("value", $(this).attr("data-id"))

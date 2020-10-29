@@ -45,7 +45,8 @@ public class FilmDAO {
     }
 
     public static Film findById(int id) throws SQLException {
-        ps = con.prepareStatement("select * from FILM where idFilm = " + id);
+        ps = con.prepareStatement("select * from FILM where idFilm = ?");
+        ps.setInt(1, id);
         rs = ps.executeQuery();
         rs.next();
         Film film = new Film();

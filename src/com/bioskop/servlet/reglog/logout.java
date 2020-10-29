@@ -17,9 +17,15 @@ public class logout extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        HttpSession ses = req.getSession();
-        ses.removeAttribute("user");
-        ses.invalidate();
-        resp.sendRedirect("/index.html");
+        try{
+            HttpSession ses = req.getSession();
+            ses.removeAttribute("user");
+            ses.invalidate();
+            resp.sendRedirect("/index.html");
+        }
+        catch(Exception e){
+            req.setAttribute("state", "GRESKA");
+            req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req,resp);
+        }
     }
 }

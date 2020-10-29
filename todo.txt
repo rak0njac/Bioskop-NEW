@@ -1,7 +1,0 @@
-Provera za distinct projekcije u ProjekcijaDAO.findByDateAndMplex - ubaciti da proverava i po premijeri, a ne samo po nazivu filma
-
-Ubaciti datehelper gde god se koristi localdate/time/ldt
-
-Ubaciti klubove, kod radnika da pokazuje samo jedan red po svakom tipu sedista
-
-Bootstrap growl i sredjivanje koda

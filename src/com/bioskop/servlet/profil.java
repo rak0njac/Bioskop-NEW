@@ -26,11 +26,12 @@ public class profil extends HttpServlet {
         }
         else{
             try {
-                Korisnik k = (Korisnik)req.getSession().getAttribute("user");
-                ArrayList<Karta> rezervacije = KartaDAO.findByIdKorisnik(k.getIdKorisnik());
+                Korisnik korisnik = (Korisnik)req.getSession().getAttribute("user");
+                ArrayList<Karta> rezervacije = KartaDAO.findByIdKorisnik(korisnik.getIdKorisnik());
                 req.setAttribute("rezervacije", rezervacije);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+                req.setAttribute("state", "GRESKA PRILIKOM POTRAZIVANJA PODATAKA");
             }
 
             req.getRequestDispatcher("/WEB-INF/jsp/profil.jsp").forward(req, resp);
@@ -39,6 +40,8 @@ public class profil extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //TODO: JSP validacija
+
         if(req.getSession().getAttribute("user") == null)
         {
             req.setAttribute("state", "NEMAS PRISTUP");
@@ -54,32 +57,36 @@ public class profil extends HttpServlet {
 
                 try {
                     KorisnikDAO.update(k);
-                    resp.sendRedirect("/profil");
+                    req.setAttribute("state", "USPESNO IZMENJENI PODACI");
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
+                    req.setAttribute("state", "GRESKA PRILIKOM IZMENE PODATAKA");
                 }
+                req.getRequestDispatcher("/WEB-INF/jsp/profil.jsp").forward(req, resp);
             }
             else if(req.getParameter("submit").equals("izmena-lozinke")){
-                Korisnik k = (Korisnik)req.getSession().getAttribute("user");
+                Korisnik korisnik = (Korisnik)req.getSession().getAttribute("user");
                 String oldPass = req.getParameter("oldPass");
                 String newPass = req.getParameter("newPass");
-                if(k.getPassword().equals(oldPass)){
-                    k.setPassword(newPass);
+                if(korisnik.getPassword().equals(oldPass)){
+                    korisnik.setPassword(newPass);
                     try {
-                        KorisnikDAO.update(k);
-                        resp.sendRedirect("/profil");
+                        KorisnikDAO.update(korisnik);
+                        req.setAttribute("state", "USPESNO IZMENJENA LOZINKA");
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
+                        req.setAttribute("state", "GRESKA PRILIKOM IZMENE LOZINKE");
                     }
+                    req.getRequestDispatcher("/WEB-INF/jsp/profil.jsp").forward(req, resp);
                 }
                 else{
                     req.setAttribute("state", "NETACNA STARA LOZINKA");
-                    req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
+                    req.getRequestDispatcher("/WEB-INF/jsp/profil.jsp").forward(req, resp);
                 }
             }
             else{
                 req.setAttribute("state", "NEISPRAVAN ZAHTEV");
-                req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/jsp/profil.jsp").forward(req, resp);
             }
         }
     }

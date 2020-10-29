@@ -43,6 +43,7 @@ public class KorisnikDAO {
             k.setStatus(rs.getNString("status"));
             k.setTip(rs.getNString("tip"));
             k.setUsername(user);
+            k.setKlub(rs.getNString("klub"));
 
             return k;
 
@@ -65,6 +66,7 @@ else return null;
         ps.setString(5, k.getEmail());
         ps.setString(6, k.getBrTel());
         ps.setString(7, k.getTip());
+
         System.out.println(ps);
         ps.executeUpdate();
 
@@ -98,6 +100,8 @@ else return null;
             k.setStatus(rs.getNString("status"));
             k.setTip(rs.getNString("tip"));
             k.setUsername(rs.getNString("username"));
+            k.setKlub(rs.getNString("klub"));
+
 
             return k;
         }
@@ -120,6 +124,13 @@ else return null;
         ps.setString(5, k.getPassword());
         ps.setInt(6, k.getIdKorisnik());
 
+        return ps.executeUpdate();
+    }
+
+    public static int enrollInClub(String username, String klub) throws SQLException {
+        ps = con.prepareStatement("update korisnik set klub = ? where username = ?");
+        ps.setString(1, klub);
+        ps.setString(2, username);
         return ps.executeUpdate();
     }
 }

@@ -23,7 +23,7 @@
                 <div class="col-sm-9">
                     <select id="mul" name="mul" class="form-control">
                         <option value="">Izaberite...</option>
-                        <c:forEach items="${requestScope.mplexes}" var="m">
+                        <c:forEach items="${requestScope.multiplexi}" var="m">
                             <option value="${m.idMultiplex}">${m.naziv}</option>
                         </c:forEach>
                     </select>

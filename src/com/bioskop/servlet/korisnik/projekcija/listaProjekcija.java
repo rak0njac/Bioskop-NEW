@@ -1,4 +1,4 @@
-package com.bioskop.servlet.user.projekcija;
+package com.bioskop.servlet.korisnik.projekcija;
 
 import com.bioskop.dao.ProjekcijaDAO;
 import com.bioskop.model.Projekcija;
@@ -13,30 +13,27 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-@WebServlet("/listaProjekcija")
+@WebServlet("/lista_projekcija")
 public class listaProjekcija extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String datum = req.getParameter("datum");
-        int mplex = Integer.parseInt( req.getParameter("mplex") );
+        int idMultiplex = Integer.parseInt( req.getParameter("mplex") ); //TODO: Promeniti u id-multiplex
         ArrayList<Projekcija> projekcije;
 
-        //System.out.println(mplex + "servlet");
-
         try {
-            projekcije = ProjekcijaDAO.findByDateAndMultiplex(datum, mplex);
+            projekcije = ProjekcijaDAO.findByDateAndMultiplex(datum, idMultiplex);
 
-            req.setAttribute("atr", projekcije);
-        } catch (SQLException throwables) {
+            req.setAttribute("projekcije", projekcije);
+        } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+            req.setAttribute("state", "GRESKA PRILIKOM POTRAZIVANJA PROJEKCIJA");
+            req.getRequestDispatcher("/WEB-INF/jsp/lista_projekcija.jsp").forward(req,resp);
         }
 
 
-
-        req.getRequestDispatcher("/WEB-INF/jsp/listaProjekcija.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/jsp/lista_projekcija.jsp").forward(req, resp);
     }
 }

@@ -17,6 +17,7 @@ public class Korisnik implements Serializable {
     private String tip;
     private String status;
     private int brPoena;
+    private String klub;
 
     public int getIdKorisnik() {
         return idKorisnik;
@@ -96,5 +97,13 @@ public class Korisnik implements Serializable {
 
     public void setBrPoena(int brPoena) {
         this.brPoena = brPoena;
+    }
+
+    public String getKlub() {
+        return klub;
+    }
+
+    public void setKlub(String klub) {
+        this.klub = klub;
     }
 }

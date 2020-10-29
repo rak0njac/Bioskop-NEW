@@ -1,5 +1,7 @@
 package com.bioskop.model;
 
+import com.bioskop.helpers.DateHelper;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ public class Projekcija implements Serializable {
     private int idProjekcija;
     private Film film;
     private Proj_Sala sala;
-    private LocalDateTime vremePocetka;
+    private DateHelper vremePocetka;
     private boolean zavrseno;
     private boolean premijera;
     private ArrayList<Karta> karte;
@@ -40,11 +42,11 @@ public class Projekcija implements Serializable {
         this.sala = sala;
     }
 
-    public LocalDateTime getVremePocetka() {
+    public DateHelper getVremePocetka() {
         return vremePocetka;
     }
 
-    public void setVremePocetka(LocalDateTime vremePocetka) {
+    public void setVremePocetka(DateHelper vremePocetka) {
         this.vremePocetka = vremePocetka;
     }
 

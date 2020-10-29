@@ -32,7 +32,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${requestScope.movies}" var="m">
+                    <c:forEach items="${requestScope.filmovi}" var="m">
                         <tr>
                             <form action="/admin/movies/editmovie" method="get">
                                 <input name="id" type="hidden" value="${m.idFilm}"/>

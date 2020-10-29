@@ -23,6 +23,7 @@
       <a href="/admin/users/ban" class="btn btn-primary">Zabrani pristup korisniku</a>
       <a href="/admin/users/regadmin" class="btn btn-primary">Registruj novog admina</a>
       <a href="/admin/users/regemployee" class="btn btn-primary">Registruj novog radnika</a>
+      <a href="/admin/users/clubenroll" class="btn btn-primary">Uclani korisnika u klub</a>
       <h2>Filmovi</h2>
       <a href="/admin/movies/addmovie" class="btn btn-primary">Dodaj novi film</a>
       <a href="/admin/movies/editmovie" class="btn btn-primary">Izmeni film</a>

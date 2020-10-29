@@ -28,7 +28,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${requestScope.mplexes}" var="m">
+                    <c:forEach items="${requestScope.multiplexi}" var="m">
                         <tr>
                             <form action="/admin/mplex/managemplex" method="post">
                                 <input type="hidden" name="action" value="delete">

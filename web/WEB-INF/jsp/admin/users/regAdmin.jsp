@@ -15,7 +15,7 @@
 <div class="container">
   <div class="row  bg-light p-3">
     <div class="col">
-      <form action="/admin/regadmin" method="post" class="form-horizontal" role="form">
+      <form action="/admin/users/regadmin" method="post" class="form-horizontal" role="form">
         <h2>Registracija</h2>
         <div class="form-group">
           <label for="userName" class="col-sm-3 control-label">Korisničko ime</label>

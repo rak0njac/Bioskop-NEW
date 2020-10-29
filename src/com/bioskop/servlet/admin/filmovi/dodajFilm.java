@@ -1,7 +1,8 @@
-package com.bioskop.servlet.admin.movies;
+package com.bioskop.servlet.admin.filmovi;
 
 import com.bioskop.dao.FilmDAO;
 import com.bioskop.model.Film;
+import com.bioskop.model.Korisnik;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,28 +11,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 
-@WebServlet("/admin/movies/addmovie")
-public class addmovie extends HttpServlet {
+@WebServlet("/admin/filmovi/dodaj_film")
+public class dodajFilm extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(req.getSession().getAttribute("admin") == null)
+        if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin"))
         {
             req.setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
         }
         else{
-            req.getRequestDispatcher("/WEB-INF/jsp/admin/movies/addmovie.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/admin/filmovi/dodaj_film.jsp").forward(req,resp);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(req.getSession().getAttribute("admin") == null)
+        //TODO: Validacija u JSP
+
+        if(!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Admin"))
         {
             req.setAttribute("state", "NEMAS PRISTUP");
             req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
@@ -52,11 +52,11 @@ public class addmovie extends HttpServlet {
             try {
                 FilmDAO.insert(film);
                 req.setAttribute("state", "USPESNO UBACEN FILM");
-                req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/jsp/admin/admin.jsp").forward(req, resp);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
                 req.setAttribute("state", "GRESKA PRILIKOM UBACIVANJA FILMA: " + throwables.getMessage() + throwables.getLocalizedMessage());
-                req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/jsp/admin/filmovi/dodaj_film.jsp").forward(req,resp);
             }
         }
     }

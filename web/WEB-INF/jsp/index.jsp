@@ -26,7 +26,7 @@
               <label for="mul">Multiplex</label>
               <select class="form-control mr-2" id="mul">
 <%--                <option value="ALL">Svi</option>--%>
-                <c:forEach items="${requestScope.mul}" var="m">
+                <c:forEach items="${requestScope.multiplexi}" var="m">
                   <option value="${m.idMultiplex}">${m.naziv}</option>
                 </c:forEach>
               </select>
@@ -35,8 +35,8 @@
             <label for="datum">Datum</label>
             <select class="form-control mr-2" id="datum">
 <%--              <option value="ALL">Svi</option>--%>
-              <c:forEach items="${requestScope.dat}" var="d">
-                <option value="${d.date}">${d.displayDate}</option>
+              <c:forEach items="${requestScope.datumi}" var="d">
+                <option value="${d.localDate}">${d.displayDate}</option>
               </c:forEach>
             </select>
           </div>

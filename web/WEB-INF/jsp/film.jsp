@@ -58,7 +58,7 @@
               <select name="projekcija" class="form-control mr-2 mb-3" id="inputProj">
                 <option value="">Odaberite datum...</option>
                 <c:forEach items="${requestScope.karte}" var="k">
-                  <option data-datetime="${k.projekcija.vremePocetka}" data-timestamp="${k.projekcija.vremePocetka.toLocalDate()}" value="${k.projekcija.idProjekcija}">${k.projekcija.vremePocetka.toLocalTime()} - Sala ${k.projekcija.sala.broj}</option>
+                  <option data-datetime="${k.projekcija.vremePocetka.localDateTime}" data-timestamp="${k.projekcija.vremePocetka.localDate}" value="${k.projekcija.idProjekcija}">${k.projekcija.vremePocetka.displayTime} - Sala ${k.projekcija.sala.broj}</option>
 <%--                  <fmt:formatDate value="${k.projekcija.vremePocetka}" pattern="HH:mm" />--%>
                 </c:forEach>
               </select>
@@ -88,6 +88,14 @@
                           <input type="radio" name="popust" value="10"> Aktiviraj 10% popusta (100 poena)<br>
                           <input type="radio" name="popust" value="25"> Aktiviraj 25% popusta (200 poena)
                         </c:if>
+          <c:if test="${sessionScope.user.klub.equals('Senior')}">
+            <input type="hidden" name="senior">
+            <br><span style="color: red">Vi ste clan Senior kluba i automatski Vam je uracunato 20% popusta na prikazanu cenu.</span>
+          </c:if>
+          <c:if test="${sessionScope.user.klub.equals('Kids') && film.zanr.equals('Animirani')}">
+            <input type="hidden" name="kids">
+            <br><span style="color: red">Vi ste clan Kids kluba i automatski Vam je uracunato 20% popusta na prikazanu cenu za svaki animirani film.</span>
+          </c:if>
         </form>
       </div>
     </div>

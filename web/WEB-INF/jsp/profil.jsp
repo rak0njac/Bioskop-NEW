@@ -35,7 +35,7 @@
                     <c:forEach items="${requestScope.rezervacije}" var="r">
                         <tr>
                             <td>${r.projekcija.film.naziv}</td>
-                            <td>${r.projekcija.vremePocetka}</td>
+                            <td>${r.projekcija.vremePocetka.displayDate} ${r.projekcija.vremePocetka.displayTime}</td>
                             <td>${r.sediste.tip}</td>
                             <td>${r.cena}</td>
                         </tr>

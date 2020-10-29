@@ -1,4 +1,4 @@
-package com.bioskop.servlet.user;
+package com.bioskop.servlet.korisnik;
 
 import com.bioskop.dao.KartaDAO;
 import com.bioskop.dao.ProjekcijaDAO;
@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 @WebServlet("/projekcija/getSedista")
@@ -21,19 +20,20 @@ public class getSedista extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //TODO: Da li se koristi?
 
-        int id = Integer.parseInt(req.getParameter("frmId"));
-
-        try {
-            Projekcija projekcija = ProjekcijaDAO.findById(id);
-            ArrayList<Sediste> sedista = KartaDAO.getFreeSeatsByProjId(id);
-
-            resp.setContentType("application/json");
-            new Gson().toJson(sedista, resp.getWriter());
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+//        int id = Integer.parseInt(req.getParameter("frmId"));
+//
+//        try {
+//            Projekcija projekcija = ProjekcijaDAO.findById(id);
+//            ArrayList<Sediste> sedista = KartaDAO.getFreeSeatsByProjId(id);
+//
+//            resp.setContentType("application/json");
+//            new Gson().toJson(sedista, resp.getWriter());
+//
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
 
 
     }

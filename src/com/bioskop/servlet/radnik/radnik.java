@@ -1,10 +1,8 @@
 package com.bioskop.servlet.radnik;
 
-import com.bioskop.dao.KartaDAO;
 import com.bioskop.dao.ProjekcijaDAO;
-import com.bioskop.helpers.DateHelper;
-import com.bioskop.model.Film;
 import com.bioskop.model.Karta;
+import com.bioskop.model.Korisnik;
 import com.bioskop.model.Projekcija;
 
 import javax.servlet.ServletException;
@@ -14,29 +12,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 
 @WebServlet("/radnik")
 public class radnik extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            ArrayList<Projekcija> projekcije = ProjekcijaDAO.findAll();
+        if (!((Korisnik) req.getSession().getAttribute("user")).getTip().equals("Radnik")) {
+            req.setAttribute("state", "NEMAS PRISTUP");
+            req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
+        }
+        else{
+            try {
+                ArrayList<Projekcija> projekcije = ProjekcijaDAO.findAll();
+                req.setAttribute("projekcije", projekcije);
 
-            //projekcije.sort(Comparator.comparing(Projekcija::getVremePocetka));
-            for(Projekcija p : projekcije)
-            {
-                //System.out.println(p.getKarte());
+            } catch (SQLException throwables) {
+                req.setAttribute("state", "GRESKA PRILIKOM POTRAZIVANJA PROJEKCIJA");
+                throwables.printStackTrace();
             }
 
-            req.setAttribute("projekcije", projekcije);
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            req.getRequestDispatcher("/WEB-INF/jsp/radnik/radnik.jsp").forward(req, resp);
         }
-
-        req.getRequestDispatcher("/WEB-INF/jsp/radnik/radnikPanel.jsp").forward(req, resp);
     }
 }
