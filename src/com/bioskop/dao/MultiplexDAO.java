@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MultiplexDAO {
 
@@ -65,7 +66,7 @@ public class MultiplexDAO {
     }
 
     public static int delete(Multiplex mplex) throws SQLException {
-        ps = con.prepareStatement("delete from multiplex where multiplexid = ?");
+        ps = con.prepareStatement("delete from multiplex where idmultiplex = ?");
         ps.setInt(1, mplex.getIdMultiplex());
         return ps.executeUpdate();
     }
@@ -74,6 +75,40 @@ public class MultiplexDAO {
         ps = con.prepareStatement("insert into multiplex(naziv) values (?)");
         ps.setString(1, multiplex.getNaziv());
         return ps.executeUpdate();
+
+    }
+
+    public static void insert(String naziv, Map<Integer, String[]> myMap) throws SQLException {
+        ps = con.prepareStatement("insert into multiplex(naziv) values (?)", ps.RETURN_GENERATED_KEYS);
+        ps.setString(1, naziv);
+        ps.executeUpdate();
+        int idMultiplex = 0;
+
+        try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+            generatedKeys.next();
+            idMultiplex = generatedKeys.getInt(1);
+        }
+
+        for (Map.Entry<Integer, String[]> entry : myMap.entrySet()) {
+            ps = con.prepareStatement("insert into proj_sala(broj, idmultiplex) values (?,?)", ps.RETURN_GENERATED_KEYS);
+            ps.setInt(1, entry.getKey());
+            ps.setInt(2, idMultiplex);
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            int idSala = rs.getInt(1);
+            int count = 0;
+
+            for(String s : entry.getValue())
+            {
+                count++;
+                ps = con.prepareStatement("insert into sediste(broj, tip, idsala) values (?,?,?)");
+                ps.setInt(1, count);
+                ps.setString(2, s);
+                ps.setInt(3, idSala);
+                ps.executeUpdate();
+            }
+        }
 
     }
 }

@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse ml-5" id="navbarText">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/index.html"><b>REPERTOAR</b></a>
+                <a class="nav-link" href="/index.html">REPERTOAR</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/onama">O NAMA</a>
@@ -27,6 +27,11 @@
                 </li>
             </c:if>
         </ul>
+        <span class="nav-item">
+                    <c:if test="${sessionScope.user != null}">
+                        <a class="nav-link mr-3" href="/profil">MOJ PROFIL</a>
+                    </c:if>
+        </span>
         <span class="nav-item">
                 <c:choose>
                     <c:when test="${sessionScope.user != null}">
@@ -55,7 +60,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                    <label class="control-label" for="loginUser">Korisničko ime:</label>
+                    <label class="control-label" for="loginUser">Korisnicko ime:</label>
                     <input class="form-control" type="text" id="loginUser" name="user"/>
                     <label class="control-label" for="loginPwd">Lozinka:</label>
                     <input class="form-control" type="password" id="loginPwd" name="pass"/>

@@ -90,7 +90,10 @@ public class addprojection extends HttpServlet {
                 System.out.println(tipovi);
 
                 proj.setSala(Proj_SalaDAO.findById(Integer.parseInt(req.getParameter("sala"))));
-                proj.setPremijera(Boolean.parseBoolean(req.getParameter("premijera")));
+                if(req.getParameter("premijera")!=null)
+                    proj.setPremijera(true);
+                else proj.setPremijera(false);
+                //proj.setPremijera(Boolean.parseBoolean(req.getParameter("premijera")));
 
 
                 proj.setIdProjekcija(ProjekcijaDAO.insert(proj));

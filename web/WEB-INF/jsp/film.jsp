@@ -58,12 +58,13 @@
               <select name="projekcija" class="form-control mr-2 mb-3" id="inputProj">
                 <option value="">Odaberite datum...</option>
                 <c:forEach items="${requestScope.karte}" var="k">
-                  <option data-timestamp="${k.projekcija.vremePocetka.toLocalDate()}" value="${k.projekcija.idProjekcija}">${k.projekcija.vremePocetka.toLocalTime()} - Sala ${k.projekcija.sala.broj}</option>
+                  <option data-datetime="${k.projekcija.vremePocetka}" data-timestamp="${k.projekcija.vremePocetka.toLocalDate()}" value="${k.projekcija.idProjekcija}">${k.projekcija.vremePocetka.toLocalTime()} - Sala ${k.projekcija.sala.broj}</option>
 <%--                  <fmt:formatDate value="${k.projekcija.vremePocetka}" pattern="HH:mm" />--%>
                 </c:forEach>
               </select>
               <div id="inputKolicina" style="display: none">
-                Kolicina:<input type="number" min="1" value="1" name="kolicina" class="form-group ml-2">
+                <label for="kolicina">Kolicina:</label>
+                <input type="number" id="kolicina" min="1" value="1" name="kolicina" class="form-control" max="6" style="width:50px;">
               </div>
             </div>
             <select style="display: none" id="hiddenSediste">
@@ -79,13 +80,14 @@
               <input type="submit" id="btnRez" style="display: none" class="btn btn-danger" data-user="${sessionScope.user}" style="width: 100%" value="REZERVISI">
             </div>
           </div>
-                        <c:if test="${sessionScope.user.brPoena > 100}">
-          <input type="checkbox" name="popust10"> Aktiviraj 10% popusta (100 poena)<br>
+                        <c:if test="${sessionScope.user.brPoena >= 100 && sessionScope.user.brPoena < 200}">
+          <input type="checkbox" name="popust" value="10"> Aktiviraj 10% popusta (100 poena)<br>
                         </c:if>
-                        <c:if test="${sessionScope.user.brPoena > 200}">
-          <input type="checkbox" name="popust25"> Aktiviraj 25% popusta (200 poena)
+                        <c:if test="${sessionScope.user.brPoena >= 200}">
+                          <input type="radio" name="popust" value="0" checked>Bez popusta<br>
+                          <input type="radio" name="popust" value="10"> Aktiviraj 10% popusta (100 poena)<br>
+                          <input type="radio" name="popust" value="25"> Aktiviraj 25% popusta (200 poena)
                         </c:if>
-
         </form>
       </div>
     </div>
@@ -102,10 +104,10 @@
 
   $(document).ready(function () {
    $("#inputProj > option").each(function(){
-     if(options[$(this).attr("data-timestamp")]) {
+     if(options[$(this).attr("data-datetime")]) {
        $(this).remove();
      } else {
-       options[$(this).attr("data-timestamp")] = this.value;
+       options[$(this).attr("data-datetime")] = this.value;
      }
    })
     $("#inputProj").attr("disabled", true)
@@ -145,10 +147,8 @@ $("#inputDatum").change(function(){
     $(opts).each(function () {
       if($(this).css('display') == 'none')            // NE DIRAJ - Chrome ne prepoznaje sakrivene optione standardnim selektorima (:hidden itd)
       {
-        //console.log("hidden!")
       }
       else{
-        //console.log("visible!")
         $(element).val($(this).val())
         return false
       }
@@ -161,6 +161,14 @@ $("#inputDatum").change(function(){
   })
 
   $("#inputSediste").change(function () {
+    $("#inputKolicina > input").val(1)
+    var cnt = $("#inputSediste option:selected").attr("data-cnt")
+    if(cnt==null)
+    {
+      $("#inputKolicina > input").attr("max", 1)
+    }
+    else $("#inputKolicina > input").attr("max", cnt)
+
     getCena()
   })
 
@@ -174,9 +182,6 @@ $("#inputDatum").change(function(){
       brojPoTipu.push($(this).val())
     })
 
-    //var stringArray = count(brojPoTipu)
-
-    //var array_elements = array;
     var stringArray = []
 
     brojPoTipu.sort();
@@ -190,9 +195,6 @@ $("#inputDatum").change(function(){
           stringArray.push(current + ' (' + cnt + ')')
           var cena = $("#hiddenSediste").find("option[value='" + current + "'][data-id=" + projekcija + "]").attr("data-cena")
           $("#inputSediste").append("<option value='" + current + "' data-cena='" + cena + "' data-cnt='" + cnt + "'>" + current + " (" + cnt + ")" + "</option>")
-          //$("#inputKolicina > input").val(1)
-          //$("#inputKolicina > input").attr("max", cnt)
-          //console.log(current + ' (' + cnt + ')');
         }
         current = brojPoTipu[i];
         cnt = 1;
@@ -204,62 +206,29 @@ $("#inputDatum").change(function(){
     stringArray.push(current + ' (' + cnt + ')')
     var cena = $("#hiddenSediste").find("option[value='" + current + "'][data-id=" + projekcija + "]").attr("data-cena")
     $("#inputSediste").append("<option value='" + current + "' data-cena='" + cena + "' data-cnt='" + cnt + "'>" + current + " (" + cnt + ")" + "</option>")
-    //$("#inputKolicina > input").val(1)
-    //$("#inputKolicina > input").attr("max", cnt)
    }
-
-
-    //console.log(stringArray)
 
     selectFirst($("#inputSediste"))
   }
 
-  //////////////////////////////////
-  function count(array) {
-    var array_elements = array;
-    var stringArray = []
+  $("#kolicina").change(function () {
+    getCena()
+  })
 
-    array_elements.sort();
-
-    var current = null;
-    var cnt = 0;
-    for (var i = 0; i < array_elements.length; i++) {
-      if (array_elements[i] != current) {
-        if (cnt > 0) {
-          stringArray.push(current + ' (' + cnt + ')')
-          var cena = $("#hiddenSediste").find("option[value='" + current + "'").attr("data-cena")
-          $("#inputSediste").append("<option value='" + current + "' data-cena='" + cena + "'>" + current + " (" + cnt + ")" + "</option>")
-          //console.log(current + ' (' + cnt + ')');
-        }
-        current = array_elements[i];
-        cnt = 1;
-      } else {
-        cnt++;
-      }
-    }
-    if (cnt > 0) {
-      stringArray.push(current + ' (' + cnt + ')')
-      var cena = $("#hiddenSediste").find("option[value='" + current + "'").attr("data-cena")
-      $("#inputSediste").append("<option value='" + current + "' data-cena='" + cena + "'>" + current + " (" + cnt + ")" + "</option>")
-      //console.log(current + ' (' + cnt + ')');
-    }
-
-    return stringArray
-  }
-
-
-  /////////////////////////////////
+  $("input[name='popust']").change(function () {
+      getCena()
+  })
 
   function getCena(){
-    $("#inputKolicina > input").val(1)
-    var cnt = $("#inputSediste option:selected").attr("data-cnt")
-    if(cnt==null)
-    {
-      $("#inputKolicina > input").attr("max", 1)
-    }
-    else $("#inputKolicina > input").attr("max", cnt)
     var cena = $("#inputSediste option:selected").attr("data-cena")
-        $("#cena").text("Cena: " + cena + " din.")
+    var kolicina = $("#inputKolicina > input").val()
+    var popust = 0
+    if($("input[name='popust']").is(':checked'))
+    {
+      popust = $("input[name='popust']:checked").val()
+    }
+    cena = (cena * kolicina) - ((cena * kolicina) * popust / 100)
+    $("#cena").text("Cena: " + cena + " din.")
   }
 
   $('#frmRez').on('submit', function(event) {
@@ -271,6 +240,6 @@ $("#inputDatum").change(function(){
   });
 </script>
 
-<script src="../../js/login.js"></script>
+<script src="/js/login.js"></script>
 
 </body></html>

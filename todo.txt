@@ -1,41 +1,7 @@
-HOMEPAGE:
-prikazivati projekcije iskljucivo >= od sadasnjeg vremena + 45 min // TEST
-obeleziti premijere, link je dostupan ako korisnik ima vise od 500 poena // TEST
+Provera za distinct projekcije u ProjekcijaDAO.findByDateAndMplex - ubaciti da proverava i po premijeri, a ne samo po nazivu filma
 
-FILM:
-u zagradi pored tipa sedista broj slobodnih mesta tog tipa // TEST
-dodati polje za kolicinu // TEST
-rezervisi dugme otvara modal za prijavu ako nisi prijavljen // TEST
-ako ima vise od 100 poena, prikazati checkbox iskoristi 10% popusta // TEST
-ako ima vise od 200 poena, prikazati checkbox iskoristi 25% popusta // TEST
-ako je clan kluba za decu, a zanr je 'Animirani', popust 50%
-ako je clan kluba seniora, popust 20%
+Ubaciti datehelper gde god se koristi localdate/time/ldt
 
-ADMIN:
-dodeli korisniku clanstvo u klubu
+Ubaciti klubove, kod radnika da pokazuje samo jedan red po svakom tipu sedista
 
-NOVA PROJEKCIJA:
-prilikom izmene sale, dodati polja u formatu: TIP SEDISTA [INPUT] gde se unosi cena za taj tip sedista. prilikom izmene proveriti koji sve tipovi sedista postoje u toj sali, i samo te tipove dinamicki dodavati u formu.
-
-ALG:
-1. JS postavlja na hidden sve div inpute sedista koji nemaju data-id atribut jednak value atributu sale
-2. Za preostale div inpute, JS radi distinct
-3. Preostalim div inputima JS dodeljuje atribut name=cenaTip (npr cenaKlasicno)
-3.5 Prilikom novog onChange, svim div inputima se brise atribut name, postavlja se show(), a zatim se nastavlja od koraka 1.
-4. Servlet puni Map<> svim parametrima
-5. Servlet ide kroz map i trazi parametre koji pocinju sa 'cena'
-6. Servlet kreira novi map koji sadrzi samo cene i gde je ime drugi deo od 'cenaKlasicno' znaci 'Klasicno' a cena je cena
-7. Kreira se projekcija
-8. Foreach na novom mapu, poziva se JDBC da pronadje IDsediste od svih sedista koja imaju taj tip u toj sali, a zatim kreira nove karte sa tim IDsedistima i dodeljuje im cenu, svim kartama takodje dodeljuje idprojekciju
-
-
-ULOGOVAN RADNIK:
-na filmu pise STAMPAJ umesto rezervisi
-lista je poredjana prema vremenu projekcije, u listi se nalaze sve rezervisane karte kao i podaci o korisniku koji je rezervisao, i dugme STAMPAJ prilikom kog se korisniku dodeljuju bodovi (10% od cene karte), takodje u svakoj projekciji nalazi se dugme OBRISI SVE koje radnik pritiska ukoliko se niko ne pojavi pola sata pred pocetak projekcije
-
-ULOGOVAN MANAGER:
-bira period OD - DO i u listi mu se prikazuju projekcije sa svim detaljima (multiplex, proj_sala) kao i broj prodatih karata po sedistu (u zagradi ukupna cena prodatih karata) a dole pise ukupna zarada na toj projekciji
-
-BOOTSTRAP-GROWL
-
-SREDJIVANJE KODA
+Bootstrap growl i sredjivanje koda

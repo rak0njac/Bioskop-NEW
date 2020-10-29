@@ -12,7 +12,8 @@
 
 <form action="film" id="frmProj" method="get">
   <input type="hidden" name="datum"/>
-  <input type="hidden" name="id"/>
+  <input type="hidden" name="projId"/>
+    <input type="hidden" name="mplexId">
 </form>
 
 <jsp:include page="navbar.jsp"/>
@@ -26,7 +27,7 @@
               <select class="form-control mr-2" id="mul">
 <%--                <option value="ALL">Svi</option>--%>
                 <c:forEach items="${requestScope.mul}" var="m">
-                  <option value="${m}">${m}</option>
+                  <option value="${m.idMultiplex}">${m.naziv}</option>
                 </c:forEach>
               </select>
           </div>
@@ -52,11 +53,7 @@
 
 <script>
   $(document).ready(function(){
-    // $.get( "/movieList", function( data ) {
-    //   $( "#movieList" ).html( data );
-    // });
       loadMovies()
-
   })
 
   $("select").change(function () {
@@ -75,12 +72,13 @@
   }
 
   $("#movieList").on("click", ".btn-projekcija", function() {
-    $('input[name ="id"]').val($(this).val())
-    $("#frmProj").submit();
+    $('input[name ="projId"]').val($(this).val())
+      $('input[name ="mplexId"]').val($("#mul").val())
+      $("#frmProj").submit();
   })
 </script>
 
-<script src="../../js/login.js"></script>
+<script src="/js/login.js"></script>
 
 </body>
 </html>

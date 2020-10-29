@@ -154,25 +154,20 @@ public class ProjekcijaDAO {
         return vremenaAndSale;
     }
 
-    public static ArrayList<Projekcija> findByDateAndMultiplex(String date, String mulNaziv) throws SQLException, ParseException {
+    public static ArrayList<Projekcija> findByDateAndMultiplex(String date, int idMplex) throws SQLException, ParseException {
         projList.clear();
         String st;
 
-        //LocalDate ld = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy."));
-        //date = ld.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-        //date = new SimpleDateFormat("MM/dd/yyyy").format(d);
-        //Multiplex mplex = MultiplexDAO.findByNaziv(mulNaziv);
-
         st = "select * from PROJEKCIJA where datediff(day, VremePocetka, ?) = 0 " +
-                "and idsala in (select idsala from proj_sala where idmultiplex = (select idmultiplex from multiplex where naziv = ?))";
+                "and idsala in (select idsala from proj_sala where idmultiplex = ?)";
 
         ps = con.prepareStatement(st);
 
         ps.setString(1, date);
-        ps.setString(2, mulNaziv);
+        ps.setInt(2, idMplex);
         rs = ps.executeQuery();
 
-        System.out.println(st);
+        System.out.println(idMplex);
 
         while(rs.next()){
             Film film = FilmDAO.findById(rs.getInt("idFilm"));

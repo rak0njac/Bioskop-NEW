@@ -20,7 +20,7 @@ public class listaProjekcija extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String datum = req.getParameter("datum");
-        String mplex = req.getParameter("mplex");
+        int mplex = Integer.parseInt( req.getParameter("mplex") );
         ArrayList<Projekcija> projekcije;
 
         //System.out.println(mplex + "servlet");

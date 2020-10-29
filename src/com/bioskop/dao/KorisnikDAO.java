@@ -29,22 +29,25 @@ public class KorisnikDAO {
         ps.setString(1,user);
         ps.setString(2,pass);
         rs = ps.executeQuery();
-        rs.next();
+        if(rs.next())
+        {
+            Korisnik k = new Korisnik();
 
-        Korisnik k = new Korisnik();
+            k.setBrPoena(rs.getInt("brpoena"));
+            k.setBrTel(rs.getNString("brtel"));
+            k.setDatRodj(rs.getDate("datrodj").toLocalDate());
+            k.setEmail(rs.getNString("email"));
+            k.setIdKorisnik(rs.getInt("idkorisnik"));
+            k.setImePrezime(rs.getNString("imeprezime"));
+            k.setPassword(pass);
+            k.setStatus(rs.getNString("status"));
+            k.setTip(rs.getNString("tip"));
+            k.setUsername(user);
 
-        k.setBrPoena(rs.getInt("brpoena"));
-        k.setBrTel(rs.getNString("brtel"));
-        k.setDatRodj(rs.getDate("datrodj").toLocalDate());
-        k.setEmail(rs.getNString("email"));
-        k.setIdKorisnik(rs.getInt("idkorisnik"));
-        k.setImePrezime(rs.getNString("imeprezime"));
-        k.setPassword(pass);
-        k.setStatus(rs.getNString("status"));
-        k.setTip(rs.getNString("tip"));
-        k.setUsername(user);
+            return k;
 
-        return k;
+        }
+else return null;
     }
 
     public static int banByUser(String user) throws SQLException {
@@ -53,17 +56,21 @@ public class KorisnikDAO {
         return ps.executeUpdate();
     }
 
-    public static int insert(String ImePrezime, Timestamp DatRodj, String Username, String Password, String Email, String BrTel, String Tip) throws SQLException {
-        ps = con.prepareStatement("insert into korisnik(imeprezime, datrodj, username, password, email, brtel, tip) values (?,?,?,?,?,?,?)");
-        ps.setString(1, ImePrezime);
-        ps.setTimestamp(2, DatRodj);
-        ps.setString(3, Username);
-        ps.setString(4, Password);
-        ps.setString(5, Email);
-        ps.setString(6, BrTel);
-        ps.setString(7, Tip);
+    public static int insert(Korisnik k) throws SQLException {
+        ps = con.prepareStatement("insert into korisnik(imeprezime, datrodj, username, password, email, brtel, tip) values (?,?,?,?,?,?,?)", ps.RETURN_GENERATED_KEYS);
+        ps.setString(1, k.getImePrezime());
+        ps.setDate(2, Date.valueOf(k.getDatRodj()));
+        ps.setString(3, k.getUsername());
+        ps.setString(4, k.getPassword());
+        ps.setString(5, k.getEmail());
+        ps.setString(6, k.getBrTel());
+        ps.setString(7, k.getTip());
         System.out.println(ps);
-        return ps.executeUpdate();
+        ps.executeUpdate();
+
+        rs = ps.getGeneratedKeys();
+        rs.next();
+        return rs.getInt(1);
     }
 
     public static void removePoints(int i, String username) throws SQLException {
@@ -95,5 +102,24 @@ public class KorisnikDAO {
             return k;
         }
         else return null;
+    }
+
+    public static void addPoints(Korisnik user, int idKarta) throws SQLException {
+        ps = con.prepareStatement("update korisnik set brpoena = brpoena + (select cena * 0.1 from karta where idkarta = ?) where idkorisnik = ?");
+        ps.setInt(1, idKarta);
+        ps.setInt(2, user.getIdKorisnik());
+        ps.executeUpdate();
+    }
+
+    public static int update(Korisnik k) throws SQLException {
+        ps = con.prepareStatement("update korisnik set email = ?, imeprezime = ?, brtel = ?, datrodj = ?, password = ? where idkorisnik = ?");
+        ps.setString(1, k.getEmail());
+        ps.setString(2, k.getImePrezime());
+        ps.setString(3, k.getBrTel());
+        ps.setDate(4, Date.valueOf(k.getDatRodj()));
+        ps.setString(5, k.getPassword());
+        ps.setInt(6, k.getIdKorisnik());
+
+        return ps.executeUpdate();
     }
 }

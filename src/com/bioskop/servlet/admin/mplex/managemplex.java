@@ -13,8 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 
 @WebServlet("/admin/mplex/managemplex")
 public class managemplex extends HttpServlet {
@@ -47,9 +46,18 @@ public class managemplex extends HttpServlet {
                 req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);
             }
             else if (action.equals("add")) {
-                Multiplex multiplex = new Multiplex();
-                multiplex.setNaziv(req.getParameter("naziv"));
-                MultiplexDAO.insert(multiplex);
+                Map<String, String[]> map = req.getParameterMap();
+                Map<Integer, String[]> myMap = new HashMap<>();
+                int i = 0;
+                for (Map.Entry<String, String[]> entry : map.entrySet()) {
+                    if(entry.getKey().contains("sediste"))
+                    {
+                        i++;
+                        myMap.put(i, entry.getValue());
+                    }
+                }
+
+                MultiplexDAO.insert(req.getParameter("naziv"), myMap);
 
                 req.setAttribute("state", "USPESNO DODAT MULTIPLEX");
                 req.getRequestDispatcher("/WEB-INF/jsp/DEBUG-MSG.jsp").forward(req, resp);

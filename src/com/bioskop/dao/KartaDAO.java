@@ -40,18 +40,17 @@ public class KartaDAO {
         return sedista;
     }
 
-    public static ArrayList<Karta> findByIdFilm(int id) throws SQLException {
+    public static ArrayList<Karta> findByIdFilmIdMplex(int idFilm, int idMplex) throws SQLException {
                 kartaList.clear();
-                    ps = con.prepareStatement("select * from karta where idprojekcija in (select idprojekcija from projekcija where idfilm = ?) and status = 'Raspolozivo'");
-                    ps.setInt(1, id);
-                    rs = ps.executeQuery();
+                    ps = con.prepareStatement("select * from karta where idprojekcija in " +
+                            "(select idprojekcija from projekcija where idfilm = ? and idsala in " +
+                            "(select idsala from proj_sala where idmultiplex = ?)) " +
+                            "and status = 'Raspolozivo'");
+                    ps.setInt(1, idFilm);
+        ps.setInt(2, idMplex);
+        rs = ps.executeQuery();
                     while(rs.next()){
                         Karta karta = new Karta();
-                        //Projekcija projekcija = new Projekcija();
-                        //Sediste sediste = new Sediste();
-//
-                        //projekcija.setIdProjekcija(p.getIdProjekcija());
-                        //sediste.setTip();
 
                         karta.setCena(rs.getDouble("cena"));
                         karta.setProjekcija(ProjekcijaDAO.findById(rs.getInt("idprojekcija")));
@@ -67,7 +66,7 @@ public class KartaDAO {
     public static Karta findByProjAndSeat(int idProjekcija, String tipSedista) throws SQLException {
         ps = con.prepareStatement("select top 1 * from karta where IdProjekcija = ? " +
                 "and IdSediste in (select idsediste from SEDISTE where Tip = ?) " +
-                "and status = 'Raspolozivo'");
+                "and idkorisnik is null");
         ps.setInt(1, idProjekcija);
         ps.setString(2, tipSedista);
         rs = ps.executeQuery();
@@ -85,9 +84,7 @@ public class KartaDAO {
     }
 
     public static String reserveTicket(Karta karta, String username) throws SQLException {
-
-
-            ps = con.prepareStatement("update karta set status = 'Rezervisano', idkorisnik = (select idkorisnik from korisnik where username=?) where idkarta = ?");
+            ps = con.prepareStatement("update karta set idkorisnik = (select idkorisnik from korisnik where username=?) where idkarta = ?");
             ps.setString(1, username);
             ps.setInt(2, karta.getIdKarta());
             if(ps.executeUpdate() > 0)
@@ -117,7 +114,7 @@ public class KartaDAO {
 
     public static void discount(Karta karta, int disc) throws SQLException {
         ps = con.prepareStatement("update karta set cena = ? where idkarta = ?");
-        double cena = karta.getCena() / 100 * disc;
+        double cena = karta.getCena() - (karta.getCena() * disc / 100);
         ps.setDouble(1, cena);
         ps.setInt(2, karta.getIdKarta());
 
@@ -141,6 +138,37 @@ public class KartaDAO {
             kartaList.add(karta);
         }
         return kartaList;
+    }
+
+    public static ArrayList<Karta> findByIdKorisnik(int idKorisnik) throws SQLException {
+        kartaList.clear();
+        ps=con.prepareStatement("select * from karta where idkorisnik = ?");
+        ps.setInt(1,idKorisnik);
+        rs = ps.executeQuery();
+        while(rs.next())
+        {
+            Karta karta = new Karta();
+            karta.setIdKarta(rs.getInt("idkarta"));
+            karta.setCena(rs.getDouble("cena"));
+            karta.setProjekcija(ProjekcijaDAO.findById(rs.getInt("idprojekcija")));
+            karta.setSediste(SedisteDAO.findById(rs.getInt("idsediste")));
+            karta.setStatus(rs.getNString("status"));
+            karta.setKorisnik(KorisnikDAO.findById(idKorisnik));
+            kartaList.add(karta);
+        }
+        return kartaList;
+    }
+
+    public static int approveReservation(int idKarta) throws SQLException {
+        ps = con.prepareStatement("update karta set status = 'Rezervisano' where idkarta = ?");
+        ps.setInt(1, idKarta);
+        return ps.executeUpdate();
+    }
+
+    public static int cancelReservation(int idKarta) throws SQLException {
+        ps = con.prepareStatement("update karta set idkorisnik = NULL where idkarta = ?");
+        ps.setInt(1, idKarta);
+        return ps.executeUpdate();
     }
 
 //    public static ArrayList<Film> findAll() throws SQLException {

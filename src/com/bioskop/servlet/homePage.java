@@ -6,6 +6,7 @@ import com.bioskop.helpers.DateHelper;
 import com.bioskop.model.Film;
 import com.bioskop.model.Multiplex;
 import com.bioskop.model.Projekcija;
+import com.sun.org.apache.xpath.internal.operations.Mult;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +26,7 @@ public class homePage extends HttpServlet {
 
         ArrayList<Projekcija> projekcije;
         Set<String> datumi = new HashSet<>();
-        Set<String> multiplexi = new HashSet<>();
+        Set<Multiplex> multiplexi = new TreeSet<>(Comparator.comparing(Multiplex::getIdMultiplex));
 
         ArrayList<DateHelper> tempDH = new ArrayList<>();
         Set<DateHelper> dh = new TreeSet<>(Comparator.comparing(DateHelper::getLocalDate));
@@ -37,7 +38,7 @@ public class homePage extends HttpServlet {
             {
                 tempDH.add(new DateHelper(p.getVremePocetka()));
 
-                String multiplex = p.getSala().getMultiplex().getNaziv();
+                Multiplex multiplex = MultiplexDAO.findByNaziv(p.getSala().getMultiplex().getNaziv());
                 multiplexi.add(multiplex);
             }
 

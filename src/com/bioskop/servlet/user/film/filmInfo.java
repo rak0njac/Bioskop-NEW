@@ -27,14 +27,15 @@ public class filmInfo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        int id = Integer.parseInt(req.getParameter("id"));
+        int projId = Integer.parseInt(req.getParameter("projId"));
+        int mplexId = Integer.parseInt(req.getParameter("mplexId"));
 
         Set<DateHelper> datumi = new HashSet<>();
 
         try {
-            Projekcija projekcija = ProjekcijaDAO.findById(id);
+            Projekcija projekcija = ProjekcijaDAO.findById(projId);
             Film film = projekcija.getFilm();
-            ArrayList<Karta> karte = KartaDAO.findByIdFilm(film.getIdFilm());
+            ArrayList<Karta> karte = KartaDAO.findByIdFilmIdMplex(film.getIdFilm(), mplexId);
 
             for(Karta k : karte)
             {

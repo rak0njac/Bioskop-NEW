@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 @WebServlet("/registracija")
 public class registracija extends HttpServlet
@@ -28,24 +29,24 @@ public class registracija extends HttpServlet
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
-        String imeprezime = req.getParameter("ime") + " " + req.getParameter("prezime");
-        String datrodj = req.getParameter("datrodj");
-        String brtel = req.getParameter("brtel");
-        String email = req.getParameter("email");
+        Korisnik k = new Korisnik();
 
-        Timestamp date = null;
-        try {
-            java.util.Date d = new SimpleDateFormat("yyyy-MM-dd").parse(datrodj);
-            date = new Timestamp(d.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        k.setUsername(req.getParameter("username"));
+        k.setPassword(req.getParameter("password"));
+        k.setImePrezime(req.getParameter("ime") + " " + req.getParameter("prezime"));
+        k.setDatRodj(LocalDate.parse(req.getParameter("datrodj")));
+        k.setBrTel(req.getParameter("brtel"));
+        k.setEmail(req.getParameter("email"));
+        k.setTip("User");
+        k.setStatus("Aktivan");
+        k.setBrPoena(0);
+
 
         try {
-            KorisnikDAO.insert(imeprezime, date,username,password,email,brtel,"User");
-            req.getSession().setAttribute("user", username);
+            k.setIdKorisnik(KorisnikDAO.insert(k));
+            req.getSession().setAttribute("user", k);
+            req.getSession().setAttribute("admin", null);
+            req.getSession().setAttribute("radnik", null);
             resp.sendRedirect("/index.html");
         } catch (SQLException throwables) {
             throwables.printStackTrace();

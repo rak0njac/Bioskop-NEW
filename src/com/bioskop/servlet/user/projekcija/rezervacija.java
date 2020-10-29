@@ -28,27 +28,27 @@ public class rezervacija extends HttpServlet {
             System.out.println(req.getParameter("sediste") + " " + req.getParameter("projekcija"));
             Korisnik k = (Korisnik)req.getSession().getAttribute("user");
             int kolicina = Integer.parseInt(req.getParameter("kolicina"));
-            Boolean popust10 = Boolean.parseBoolean(req.getParameter("popust10"));
-            Boolean popust25 = Boolean.parseBoolean(req.getParameter("popust25"));
+            int popust = 0;
+            if(!(req.getParameter("popust") == null))
+                popust = Integer.parseInt(req.getParameter("popust"));
+            //Boolean popust25 = Boolean.parseBoolean(req.getParameter("popust25"));
 
             try {
                 String state = "";
                 for(int i = 0; i < kolicina; i++)
                 {
                     Karta karta = KartaDAO.findByProjAndSeat(idProjekcija, tipSedista);
-                    if(popust10)
+                    if(popust > 0)
                     {
-                        KartaDAO.discount(karta, 10);
-                        KorisnikDAO.removePoints(100, k.getUsername());
-                    }
-                    else if(popust25)
-                    {
-                        KartaDAO.discount(karta, 25);
-                        KorisnikDAO.removePoints(250, k.getUsername());
+                        KartaDAO.discount(karta, popust);
+                        if(popust == 10)
+                            KorisnikDAO.removePoints(100, k.getUsername());
+                        else KorisnikDAO.removePoints(200, k.getUsername());
                     }
                     state = KartaDAO.reserveTicket(karta, k.getUsername());
                 }
 
+                req.getSession().setAttribute("user", KorisnikDAO.findById(k.getIdKorisnik()));
                 req.setAttribute("state", state);
 
             } catch (SQLException throwables) {
